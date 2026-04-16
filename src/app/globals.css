@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border: #e2e8f0;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
+  --brand: #0ea5e9;
+  --brand-dark: #0369a1;
+  --accent: #10b981;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+}
+
+.dark {
+  --bg-primary: #0a0f1e;
+  --bg-secondary: #111827;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --border: #1e293b;
+  --glass-bg: rgba(17, 24, 39, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--brand-dark); }
+
+/* ============================================================
+   GLASSMORPHISM UTILITIES
+   ============================================================ */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================================
+   HERO VIDEO
+   ============================================================ */
+.hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.animate-fade-in-up { animation: fadeInUp 0.7s ease-out forwards; }
+.animate-fade-in    { animation: fadeIn  0.5s ease-in  forwards; }
+.animate-float      { animation: float   3s ease-in-out infinite; }
+.animate-spin-slow  { animation: spin-slow 20s linear infinite; }
+
+/* ============================================================
+   SKELETON LOADER
+   ============================================================ */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--border) 25%,
+    rgba(255,255,255,0.3) 50%,
+    var(--border) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* ============================================================
+   CARD HOVER EFFECTS
+   ============================================================ */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: var(--shadow-lg);
+}
+
+.img-zoom img {
+  transition: transform 0.5s ease;
+}
+.img-zoom:hover img {
+  transform: scale(1.08);
+}
+
+/* ============================================================
+   CUSTOM BUTTON STYLES
+   ============================================================ */
+.btn-primary {
+  @apply bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:shadow-sky-500/30 hover:scale-105 transition-all duration-300;
+}
+
+.btn-secondary {
+  @apply border-2 border-sky-500 text-sky-600 dark:text-sky-400 font-semibold px-6 py-3 rounded-full hover:bg-sky-500 hover:text-white transition-all duration-300;
+}
+
+.btn-ghost {
+  @apply text-gray-600 dark:text-gray-300 hover:text-sky-500 font-medium transition-colors duration-200;
+}
+
+/* ============================================================
+   SECTION STYLES
+   ============================================================ */
+.section-title {
+  @apply font-display text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white;
+}
+
+.section-subtitle {
+  @apply text-sky-500 dark:text-sky-400 font-semibold text-sm uppercase tracking-widest;
+}
+
+.section-desc {
+  @apply text-gray-500 dark:text-gray-400 text-lg leading-relaxed;
+}
+
+/* ============================================================
+   TAG BADGE
+   ============================================================ */
+.tag-badge {
+  @apply inline-flex items-center gap-1 bg-sky-500/10 text-sky-600 dark:text-sky-300 text-xs font-semibold px-3 py-1 rounded-full border border-sky-500/20;
+}
+
+/* ============================================================
+   MASONRY GALLERY
+   ============================================================ */
+.masonry {
+  columns: 1;
+  column-gap: 1rem;
+}
+@media (min-width: 640px)  { .masonry { columns: 2; } }
+@media (min-width: 768px)  { .masonry { columns: 3; } }
+@media (min-width: 1024px) { .masonry { columns: 4; } }
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
+
+/* ============================================================
+   PARALLAX SECTION BG
+   ============================================================ */
+.parallax-bg {
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
+/* ============================================================
+   AI ASSISTANT PULSE RING
+   ============================================================ */
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(14, 165, 233, 0.5);
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+/* ============================================================
+   MAP CONTAINER
+   ============================================================ */
+.map-container {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ============================================================
+   STAR RATING
+   ============================================================ */
+.star-rating {
+  color: #f59e0b;
+  letter-spacing: -2px;
+}
+
+/* ============================================================
+   TOAST OVERRIDE
+   ============================================================ */
+.Toaster > div {
+  font-family: var(--font-sans) !important;
+}
+
+/* ============================================================
+   SMOOTH PAGE TRANSITION
+   ============================================================ */
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.page-transition {
+  animation: fadeIn 0.4s ease-in-out;
+}
