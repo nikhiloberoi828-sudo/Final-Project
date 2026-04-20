@@ -4,11 +4,15 @@ const express = require("express");
 const cors = require("cors");
 const sequelize = require("./config/db");
 
+// ─── Load Models ──────────────────────────────────────────────
 require("./models/Booking");
+require("./models/Contact");
 
+// ─── Load Routes ──────────────────────────────────────────────
 const bookingRoutes = require("./routes/bookingRoutes");
 const aiChatRoutes = require("./routes/aiChatRoutes");
 const destinationRoutes = require("./routes/destinationRoutes");
+const contactRoutes = require("./routes/contactRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 7500;
@@ -20,31 +24,40 @@ app.use(express.urlencoded({ extended: true }));
 
 // ─── Health Check ─────────────────────────────────────────────
 app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", message: "Server is running", timestamp: new Date().toISOString() });
+  res.json({ status: "ok", message: "Himachal Explorer API is running", timestamp: new Date().toISOString() });
 });
 
 // ─── Routes ───────────────────────────────────────────────────
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/destinations", destinationRoutes);
 app.use("/api/ai-chat", aiChatRoutes);
+app.use("/api/contact", contactRoutes);
 
 // ─── 404 Handler ──────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });
 });
 
+// ─── Global Error Handler ─────────────────────────────────────
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err);
+  res.status(500).json({ success: false, message: "Internal server error" });
+});
+
 // ─── Connect DB then Start Server ─────────────────────────────
 sequelize
   .authenticate()
   .then(function () {
-    console.log("✅ PostgreSQL connected");
-    return sequelize.sync({ force: false });
+    console.log("✅ Supabase PostgreSQL connected");
+    return sequelize.sync({ force: false, alter: false });
   })
   .then(function () {
     app.listen(PORT, function () {
       console.log("🚀 Server running at http://localhost:" + PORT);
-      console.log("📍 Health check: http://localhost:" + PORT + "/api/health");
-      console.log("📋 Bookings: http://localhost:" + PORT + "/api/bookings");
+      console.log("📍 Health:    http://localhost:" + PORT + "/api/health");
+      console.log("📋 Bookings:  http://localhost:" + PORT + "/api/bookings");
+      console.log("📨 Contact:   http://localhost:" + PORT + "/api/contact");
+      console.log("🤖 AI Chat:   http://localhost:" + PORT + "/api/ai-chat");
     });
   })
   .catch(function (error) {

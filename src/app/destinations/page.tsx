@@ -73,14 +73,13 @@ function DestinationCard({ dest, isFav, onToggleFav, onExplore }: { dest: Destin
         </AnimatePresence>
 
         <div className="flex items-center justify-between">
-          <span className={`text-xs px-3 py-1 rounded-full font-medium capitalize ${
-            dest.category === "adventure" ? "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400" :
-            dest.category === "cultural" ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400" :
-            dest.category === "lake" ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" :
-            dest.category === "trek" ? "bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400" :
-            dest.category === "pilgrimage" ? "bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400" :
-            "bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400"
-          }`}>
+          <span className={`text-xs px-3 py-1 rounded-full font-medium capitalize ${dest.category === "adventure" ? "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400" :
+              dest.category === "cultural" ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400" :
+                dest.category === "lake" ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" :
+                  dest.category === "trek" ? "bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400" :
+                    dest.category === "pilgrimage" ? "bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400" :
+                      "bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400"
+            }`}>
             {dest.category.replace(/-/g, " ")}
           </span>
           <button
@@ -107,12 +106,12 @@ function ExpandedCard({ dest, onClose, onToggleFav, isFav }: { dest: Destination
         onClick={onClose}
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
       />
-      
+
       <motion.div
         layoutId={`card-${dest.id}`}
         className="relative w-full max-w-4xl max-h-[90vh] bg-[var(--bg-secondary)] rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row"
       >
-        <button 
+        <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 w-10 h-10 glass-dark rounded-full flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
         >
@@ -152,9 +151,8 @@ function ExpandedCard({ dest, onClose, onToggleFav, isFav }: { dest: Destination
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`pb-4 px-4 text-sm font-semibold transition-all relative capitalize ${
-                  activeTab === tab ? "text-sky-500" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                }`}
+                className={`pb-4 px-4 text-sm font-semibold transition-all relative capitalize ${activeTab === tab ? "text-sky-500" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                  }`}
               >
                 {tab === "overview" ? "Overview" : tab === "activities" ? "Things to Do" : "Nearby"}
                 {activeTab === tab && (
@@ -173,7 +171,7 @@ function ExpandedCard({ dest, onClose, onToggleFav, isFav }: { dest: Destination
                     <h4 className="text-xs font-bold uppercase tracking-widest text-sky-500 mb-2">About this place</h4>
                     <p className="text-[var(--text-secondary)] leading-relaxed">{dest.longDescription}</p>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="p-4 bg-sky-50 dark:bg-sky-900/20 rounded-2xl border border-sky-100 dark:border-sky-900/30">
                       <div className="flex items-center gap-2 text-sky-600 dark:text-sky-400 mb-2">
@@ -183,7 +181,7 @@ function ExpandedCard({ dest, onClose, onToggleFav, isFav }: { dest: Destination
                       <p className="text-xs text-[var(--text-secondary)]">{dest.bestTime}</p>
                       {dest.seasonDetails && <p className="text-[10px] mt-2 text-sky-500 opacity-80">{dest.seasonDetails}</p>}
                     </div>
-                    
+
                     <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-2xl border border-purple-100 dark:border-purple-900/30">
                       <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 mb-2">
                         <Star className="w-4 h-4" />
@@ -325,8 +323,8 @@ function DestinationsContent() {
       {/* Expanded View Modal */}
       <AnimatePresence>
         {expandedId && destinations.find(d => d.id === expandedId) && (
-          <ExpandedCard 
-            dest={destinations.find(d => d.id === expandedId)!} 
+          <ExpandedCard
+            dest={destinations.find(d => d.id === expandedId)!}
             onClose={() => setExpandedId(null)}
             onToggleFav={toggleFavorite}
             isFav={favorites.includes(expandedId)}
@@ -362,7 +360,7 @@ function DestinationsContent() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Filters */}
-        <div className="sticky top-20 z-30 bg-[var(--bg-secondary)] rounded-2xl shadow-lg border border-[var(--border)] p-4 mb-8">
+        <div className="top-20 z-30 bg-[var(--bg-secondary)] rounded-2xl shadow-lg border border-[var(--border)] p-4 mb-8">
           <div className="flex flex-col md:flex-row gap-4">
             {/* Search */}
             <div className="flex-1 flex items-center gap-3 bg-gray-50 dark:bg-gray-800 rounded-xl px-4 py-2.5">
@@ -406,11 +404,10 @@ function DestinationsContent() {
             {/* Favorites toggle */}
             <button
               onClick={() => setViewFavorites(!viewFavorites)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                viewFavorites
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${viewFavorites
                   ? "bg-rose-500 text-white"
                   : "bg-gray-50 dark:bg-gray-800 text-[var(--text-secondary)] hover:text-rose-500"
-              }`}
+                }`}
               id="favoritesToggle"
             >
               <Heart className={`w-4 h-4 ${viewFavorites ? "fill-white" : ""}`} />
@@ -424,11 +421,10 @@ function DestinationsContent() {
               <button
                 key={c.value}
                 onClick={() => setSelectedCat(c.value)}
-                className={`flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  selectedCat === c.value
+                className={`flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-medium transition-all ${selectedCat === c.value
                     ? "bg-sky-500 text-white"
                     : "bg-gray-100 dark:bg-gray-800 text-[var(--text-secondary)] hover:bg-sky-50 dark:hover:bg-sky-900/20 hover:text-sky-500"
-                }`}
+                  }`}
               >
                 {c.label}
               </button>

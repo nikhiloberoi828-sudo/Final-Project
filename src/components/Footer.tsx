@@ -8,6 +8,7 @@ const footerLinks = {
     { href: "/accommodation", label: "Accommodation" },
     { href: "/gallery", label: "Gallery" },
     { href: "/how-to-reach", label: "How to Reach" },
+    { href: "/nai-raahein", label: "Nai Raahein" },
     { href: "/destinations?view=favorites", label: "Favorites" },
     { href: "/about", label: "About Us" },
   ],

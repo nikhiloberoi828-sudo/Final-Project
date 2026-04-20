@@ -1,26 +1,44 @@
--- ⚠️ Run this query in pgAdmin / DBeaver to recreate your table properly ⚠️
+-- ═══════════════════════════════════════════════════════════════
+-- Himachal Explorer – Supabase Database Setup
+-- Run this in the Supabase SQL Editor at:
+-- https://supabase.com/dashboard/project/hfjsjmvflupeznutcmcw/sql
+-- ═══════════════════════════════════════════════════════════════
 
--- 1. First, clear out the conflicting model completely
-DROP TABLE IF EXISTS bookings;
-
--- 2. Drop the old ENUM types if they existed and conflicted
-DROP TYPE IF EXISTS "enum_bookings_room_type" CASCADE;
-DROP TYPE IF EXISTS "enum_bookings_status" CASCADE;
-
--- 3. Recreate the table with the exact columns your backend model expects
-CREATE TABLE bookings (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    location VARCHAR(255) NOT NULL,
-    hotel_name VARCHAR(255),
-    check_in DATE NOT NULL,
-    check_out DATE NOT NULL,
-    room_type VARCHAR(50) DEFAULT 'Standard Room',
-    total_price INTEGER DEFAULT 0,
-    status VARCHAR(20) DEFAULT 'confirmed',
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+-- ─── 1. Bookings Table ────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS bookings (
+  id          SERIAL PRIMARY KEY,
+  name        VARCHAR(255) NOT NULL,
+  phone       VARCHAR(20),
+  email       VARCHAR(255) NOT NULL,
+  location    VARCHAR(255) NOT NULL,
+  hotel_name  VARCHAR(255) DEFAULT 'General Booking',
+  check_in    DATE NOT NULL,
+  check_out   DATE NOT NULL,
+  room_type   VARCHAR(50) DEFAULT 'Standard Room',
+  total_price INTEGER DEFAULT 0,
+  status      VARCHAR(20) DEFAULT 'confirmed',
+  created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Note: Once you run this query, restart your backend server (npm run dev:all)
--- Then interact with the frontend BookingModal again!
+-- ─── 2. Contacts Table ────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS contacts (
+  id         SERIAL PRIMARY KEY,
+  name       VARCHAR(255) NOT NULL,
+  email      VARCHAR(255) NOT NULL,
+  message    TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ─── 3. Enable Row Level Security (optional but recommended) ──
+ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
+
+-- ─── 4. Policies (allow backend service role to insert) ───────
+-- Allow all operations for authenticated service role (backend uses direct PG connection)
+CREATE POLICY "Allow all for service role" ON bookings FOR ALL USING (true);
+CREATE POLICY "Allow all for service role" ON contacts FOR ALL USING (true);
+
+-- ─── 5. Verify tables were created ────────────────────────────
+SELECT table_name FROM information_schema.tables
+WHERE table_schema = 'public'
+AND table_name IN ('bookings', 'contacts');

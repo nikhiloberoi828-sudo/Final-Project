@@ -122,7 +122,7 @@ function AccommodationContent() {
       {/* Hero */}
       <div className="relative h-64 md:h-72 overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600&q=80"
+          src="/assets/dest_Naggar-Castle.jpg"
           alt="Accommodation in Himachal Pradesh"
           fill
           className="object-cover"
@@ -143,7 +143,7 @@ function AccommodationContent() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Filters */}
-        <div className="sticky top-20 z-30 bg-[var(--bg-secondary)] rounded-2xl shadow-lg border border-[var(--border)] p-4 mb-8">
+        <div className="top-20 z-30 bg-[var(--bg-secondary)] rounded-2xl shadow-lg border border-[var(--border)] p-4 mb-8">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 flex items-center gap-3 bg-gray-50 dark:bg-gray-800 rounded-xl px-4 py-2.5">
               <Search className="w-4 h-4 text-sky-500" />

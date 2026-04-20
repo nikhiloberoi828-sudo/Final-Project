@@ -4,6 +4,7 @@ const sequelize = require("../config/db");
 const Booking = sequelize.define("bookings", {
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   name: { type: DataTypes.STRING(255), allowNull: false, validate: { notEmpty: true } },
+  phone: { type: DataTypes.STRING(20), allowNull: true },
   email: { type: DataTypes.STRING(255), allowNull: false, validate: { isEmail: true } },
   location: { type: DataTypes.STRING(255), allowNull: false },
   hotel_name: { type: DataTypes.STRING(255), allowNull: true },

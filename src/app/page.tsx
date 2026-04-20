@@ -13,21 +13,21 @@ import { destinations, featuredAccommodations, testimonials } from "@/lib/data";
 // ─── Hero Slides ──────────────────────────────────────────────
 const heroSlides = [
   {
-    image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=90",
+    image: "/assets/gal_sanglavally.jpg",
     badge: "✦ Discover the Himalayas",
     title: ["Where Mountains", "Speak to Your Soul"],
     subtitle: "Experience the untouched beauty, ancient wisdom, and thrilling adventures of Himachal Pradesh",
     cta: { primary: { href: "/destinations", label: "Explore Destinations" }, secondary: { href: "/gallery", label: "View Gallery" } },
   },
   {
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=90",
+    image: "/assets/gal_dharamsala.jpg",
     badge: "✦ Little Lhasa",
     title: ["Tibetan Serenity", "in the Himalayas"],
     subtitle: "Monasteries, chai shops, and the Dalai Lama's home — Dharamshala awaits your soul",
     cta: { primary: { href: "/destinations?district=Kangra", label: "Explore Kangra" }, secondary: { href: "/accommodation", label: "Book Stay" } },
   },
   {
-    image: "https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?w=1920&q=90",
+    image: "/assets/gal_chandratallake.jpg",
     badge: "✦ Crystal Lakes",
     title: ["Chandratal —", "Moon Lake at 4300m"],
     subtitle: "Crescent-shaped Ramsar wetland surrounded by barren Himalayan peaks. Pure, surreal magic.",
@@ -224,9 +224,8 @@ export default function HomePage() {
               <button
                 key={i}
                 onClick={() => setHeroIdx(i)}
-                className={`transition-all duration-300 rounded-full ${
-                  i === heroIdx ? "w-8 h-2 bg-sky-400" : "w-2 h-2 bg-white/40 hover:bg-white/70"
-                }`}
+                className={`transition-all duration-300 rounded-full ${i === heroIdx ? "w-8 h-2 bg-sky-400" : "w-2 h-2 bg-white/40 hover:bg-white/70"
+                  }`}
                 aria-label={`Slide ${i + 1}`}
               />
             ))}
@@ -355,7 +354,7 @@ export default function HomePage() {
             >
               <div className="absolute inset-0 img-zoom">
                 <Image
-                  src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=900&q=80"
+                  src="/assets/dest_shimla ridge.jpeg"
                   alt="Shimla"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -379,7 +378,7 @@ export default function HomePage() {
                   href="/destinations?district=Shimla"
                   className="inline-flex items-center gap-2 bg-white text-gray-900 font-semibold px-6 py-2.5 rounded-full hover:bg-sky-50 transition-colors"
                 >
-                  Explore → 
+                  Explore →
                 </Link>
               </div>
             </motion.div>
@@ -387,10 +386,10 @@ export default function HomePage() {
             {/* 2x2 right grid */}
             <div className="lg:col-span-2 grid grid-cols-2 gap-5">
               {[
-                { name: "Manali", district: "Kullu", tag: "ADVENTURE", img: "https://images.unsplash.com/photo-1626015365107-334e5769c3c5?w=500&q=80", id: "manali-town" },
-                { name: "Spiti Valley", district: "Lahaul & Spiti", tag: "OFF-BEAT", img: "https://images.unsplash.com/photo-1601925228009-a09a4800b0d3?w=500&q=80", id: "spiti-kaza" },
-                { name: "Lahaul", district: "Lahaul & Spiti", tag: "BACKPACKING", img: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?w=500&q=80", id: "spiti-chandratal" },
-                { name: "Kinnaur", district: "Kinnaur", tag: "CULTURAL", img: "https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?w=500&q=80", id: "kinnaur-kalpa" },
+                { name: "Manali", district: "Kullu", tag: "ADVENTURE", img: "/assets/dest_manali.jpg", id: "manali-town" },
+                { name: "Spiti Valley", district: "Lahaul & Spiti", tag: "OFF-BEAT", img: "/assets/dest_spiti.jpg", id: "spiti-kaza" },
+                { name: "Lahaul", district: "Lahaul & Spiti", tag: "BACKPACKING", img: "/assets/dest_lahual.jpg", id: "spiti-chandratal" },
+                { name: "Kinnaur", district: "Kinnaur", tag: "CULTURAL", img: "/assets/dest_kinnaur1.jpg", id: "kinnaur-kalpa" },
               ].map((dest, i) => (
                 <motion.div
                   key={dest.id}
@@ -743,7 +742,7 @@ export default function HomePage() {
                 <div>
                   <label className="text-sky-200 text-xs mb-1 block">Number of Days</label>
                   <select className="w-full bg-white/20 text-white placeholder-sky-200 border border-white/20 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-white" id="plannerDays">
-                    {[3,5,7,10,14].map((d) => <option key={d} value={d} className="text-gray-900">{d} Days</option>)}
+                    {[3, 5, 7, 10, 14].map((d) => <option key={d} value={d} className="text-gray-900">{d} Days</option>)}
                   </select>
                 </div>
                 <div>

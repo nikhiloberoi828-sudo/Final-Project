@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Clock, Send, MessageSquare, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const contactInfo = [
   { icon: MapPin, label: "Address", value: "Tourism Dept, HP Secretariat, Shimla – 171 002", href: null },
@@ -23,10 +24,20 @@ export default function ContactPage() {
       return;
     }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    toast.success("✅ Message sent! We'll get back to you within 24 hours.");
-    setForm({ name: "", email: "", subject: "", message: "" });
-    setLoading(false);
+    try {
+      await axios.post("http://localhost:7500/api/contact", {
+        name: form.name,
+        email: form.email,
+        message: form.subject ? `[${form.subject}] ${form.message}` : form.message,
+      });
+      toast.success("✅ Message sent! We'll get back to you within 24 hours.");
+      setForm({ name: "", email: "", subject: "", message: "" });
+    } catch (error: any) {
+      const msg = error.response?.data?.message || "Failed to send message. Please try again.";
+      toast.error(`❌ ${msg}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

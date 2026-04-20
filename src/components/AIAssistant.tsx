@@ -1,7 +1,8 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bot, X, Send, Sparkles, Minimize2, Maximize2 } from "lucide-react";
+import { Bot, X, Send, Minimize2, Maximize2, Sparkles, RefreshCw } from "lucide-react";
+import axios from "axios";
 
 interface Message {
   id: string;
@@ -18,41 +19,37 @@ const SUGGESTIONS = [
   "Paragliding in Bir Billing info",
 ];
 
-const KB: Record<string, string> = {
-  spiti: "Spiti Valley is a cold desert at 3800m+. Top spots: Kaza (base), Key Monastery, Chandratal Lake (4300m), Kibber village, Tabo (1000-year monastery), Langza (fossil village), Hikkim (world's highest PO). Best visited Jun–Oct. Reach via Manali (200km) or Shimla via Kinnaur (460km).",
-  manali: "Manali is the adventure capital of HP! Top spots: Old Manali, Hadimba Temple, Solang Valley (skiing/paragliding), Rohtang Pass (3978m, permit needed), Atal Tunnel, Vashisht hot springs. Best hotels: The Himalayan, Span Resort & Spa. Best time Mar–Jun & Oct–Nov.",
-  shimla: "Shimla, Queen of Hills! Must-visit: Mall Road, The Ridge, Jakhu Temple (2455m), Kufri (snow), Narkanda (ski). Stay at Wildflower Hall or Oberoi Cecil. Take the famous Toy Train from Kalka. Best time Mar–Jun & Sep–Nov.",
-  dharamshala: "Dharamshala/McLeod Ganj — home of the Dalai Lama. Do: Triund Trek (9km, 2827m), Bhagsunag Waterfall, Kangra Fort, Namgyal Monastery. Best hotels: Hyatt Regency Dharamshala. Best time Mar–Jun, Sep–Nov. Airport at Gaggal (13km).",
-  kasol: "Kasol in Parvati Valley is the backpacker's paradise. Israeli cafes, river camping, base for Kheerganga trek (12km, 2950m). Nearby: Manikaran Sahib (hot springs), Tosh village, Malana. Best time Mar–May, Sep–Nov.",
-  budget: "Budget tips: ₹1000–2000/night for guesthouses in Kasol/Spiti. Eat at dhabas (₹80–200/meal). HRTC buses are cheapest. Volvo buses from Delhi to Manali ₹600–1200. Kaza homestays from ₹800.",
-  itinerary7: "7-day Himachal itinerary:\nDay 1: Arrive Manali, Old Manali\nDay 2: Solang Valley, Rohtang (permit)\nDay 3: Drive to Kaza via Atal Tunnel\nDay 4: Key Monastery, Kibber, Komic\nDay 5: Chandratal Lake\nDay 6: Langza, Hikkim, Tabo\nDay 7: Return to Manali",
-  snowfall: "Best time for snow: Dec–Feb in Shimla/Kufri/Manali. Rohtang Pass Jan–Mar (permit). Solang Valley Dec–Mar. Spiti stays snow-bound Oct–May — roads open Jun.",
-  paragliding: "Bir Billing — Asia's No.1 paragliding spot! ₹2000–3500 for tandem flight. 14km glide from Billing (2400m) to Bir landing (1400m). World Cup was held here in 2015. Best: Mar–May, Sep–Nov. Also Solang Valley & Dharamshala for shorter flights.",
-  kinnaur: "Kinnaur — apple orchards & ancient culture! Highlights: Kalpa (views of Kinner Kailash 6050m), Sangla Valley, Chitkul (last village near Tibet border, 3450m), Nako Lake. Take NH22 Hindustan-Tibet Highway from Shimla (260km). Best Apr–Oct.",
-  trek: "Top Himachal treks:\n• Triund: Easy, 9km, near McLeod Ganj\n• Kheerganga: Moderate, 12km, hot spring at top\n• Hampta Pass: Moderate, 4270m crossover\n• Bhrigu Lake: Moderate, 4300m, near Manali\n• Indrahar Pass: Difficult, 4342m, Dhauladhar\n• Pin Parvati: Difficult, 5319m",
-  default: "I'm your Himachal Pradesh travel AI! 🏔️ I can help with:\n• Destination info (Manali, Shimla, Spiti, Dharamshala...)\n• Hotel recommendations\n• Trekking routes & adventure sports\n• Travel itineraries\n• Budget travel tips\n• Seasonal travel advice\n\nWhat would you like to know?",
+// Fallback local KB in case backend is down
+const LOCAL_KB: Record<string, string> = {
+  spiti: "Spiti Valley is a cold desert at 3800m+. Top spots: Kaza, Key Monastery, Chandratal Lake, Kibber, Tabo, Langza, Hikkim. Best visited Jun–Oct. ❄️",
+  manali: "Manali is HP's adventure capital! 🏔️ Solang Valley, Rohtang Pass, Atal Tunnel, Vashisht hot springs. Best time Mar–Jun & Oct–Nov.",
+  shimla: "Shimla, the Queen of Hills! 👑 Mall Road, The Ridge, Jakhu Temple, Kufri, toy train from Kalka. Best time Mar–Jun & Sep–Nov.",
+  dharamshala: "Dharamshala/McLeod Ganj — home of the Dalai Lama! 🙏 Triund Trek, Bhagsunag Waterfall, Kangra Fort. Best time Mar–Jun, Sep–Nov.",
+  kasol: "Kasol — backpacker's paradise in Parvati Valley! 🌿 Cafes, river camping, Kheerganga trek, Manikaran Sahib hot springs. Best time Mar–May, Sep–Nov.",
+  trek: "Top HP treks: Triund (easy, 9km), Kheerganga (moderate, 12km), Hampta Pass (moderate, 4270m), Bhrigu Lake (moderate, 4300m), Pin Parvati (difficult, 5319m). 🥾",
+  snowfall: "Best time for snow: ❄️ Dec–Feb in Shimla/Kufri/Manali. Rohtang Pass Jan–Mar. Solang Valley Dec–Mar. Spiti stays snow-bound Oct–May.",
+  paragliding: "Bir Billing — Asia's No.1 paragliding spot! 🪂 ₹2000–3500 for tandem. 14km glide from Billing (2400m) to Bir (1400m). Best: Mar–May, Sep–Nov.",
 };
 
-function getAIResponse(query: string): string {
+function getFallbackResponse(query: string): string {
   const q = query.toLowerCase();
-  if (q.includes("spiti") || q.includes("kaza") || q.includes("key monastery")) return KB.spiti;
-  if (q.includes("manali") || q.includes("solang") || q.includes("rohtang")) return KB.manali;
-  if (q.includes("shimla") || q.includes("kufri") || q.includes("mall road")) return KB.shimla;
-  if (q.includes("dharamshala") || q.includes("mcleod") || q.includes("triund")) return KB.dharamshala;
-  if (q.includes("kasol") || q.includes("parvati") || q.includes("kheerganga")) return KB.kasol;
-  if (q.includes("budget") || q.includes("cheap") || q.includes("cost")) return KB.budget;
-  if (q.includes("7 day") || q.includes("7-day") || q.includes("week")) return KB.itinerary7;
-  if (q.includes("snow") || q.includes("snowfall") || q.includes("winter")) return KB.snowfall;
-  if (q.includes("paraglid") || q.includes("bir billing") || q.includes("flying")) return KB.paragliding;
-  if (q.includes("kinnaur") || q.includes("kalpa") || q.includes("chitkul") || q.includes("sangla")) return KB.kinnaur;
-  if (q.includes("trek") || q.includes("hiking") || q.includes("trail")) return KB.trek;
-  if (q.includes("hotel") || q.includes("stay") || q.includes("accommodation")) {
-    return "Top Himachal hotels:\n🌟 Luxury: Wildflower Hall Shimla (₹18K+), Hyatt Regency Dharamshala (₹15K+), Span Resort Manali (₹12K+)\n✨ Mid-range: Radisson Shimla (₹5-8K), Fortune Park Moksha Dharamshala (₹6K)\n💰 Budget: Zostel Spiti (₹800-1500), local guesthouses in Kasol/Manali (₹800-2500)";
-  }
-  if (q.includes("best time") || q.includes("when to visit") || q.includes("season")) {
-    return "Himachal travel seasons:\n☀️ Summer (Mar–Jun): Best overall! Pleasant weather across HP.\n🌧️ Monsoon (Jul–Sep): Avoid Spiti/Kinnaur roads. Good for Kasol/Dharamshala.\n🍂 Autumn (Oct–Nov): Perfect clear skies, snow begins.\n❄️ Winter (Dec–Feb): Snow at Shimla/Manali/Kufri. Spiti is cut off.";
-  }
-  return KB.default;
+  if (q.match(/\bhi\b|\bhello\b|\bnamaste\b|\bhey\b/)) return "Namaste! 🙏 I'm your Himachal Explorer AI. Ask me about destinations, hotels, treks, or anything HP travel-related!";
+  if (q.includes("spiti") || q.includes("kaza")) return LOCAL_KB.spiti;
+  if (q.includes("manali") || q.includes("solang")) return LOCAL_KB.manali;
+  if (q.includes("shimla") || q.includes("kufri")) return LOCAL_KB.shimla;
+  if (q.includes("dharamshala") || q.includes("mcleod")) return LOCAL_KB.dharamshala;
+  if (q.includes("kasol") || q.includes("parvati")) return LOCAL_KB.kasol;
+  if (q.includes("trek") || q.includes("hiking")) return LOCAL_KB.trek;
+  if (q.includes("snow")) return LOCAL_KB.snowfall;
+  if (q.includes("paraglid") || q.includes("bir billing")) return LOCAL_KB.paragliding;
+  return "I'm your Himachal Pradesh travel guide! 🏔️ Ask me about destinations, hotels, trekking, best times to visit, or trip planning!";
+}
+
+function formatMessageTime(): string {
+  return new Intl.DateTimeFormat("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date());
 }
 
 export default function AIAssistant() {
@@ -60,47 +57,87 @@ export default function AIAssistant() {
   const [isMinimized, setIsMinimized] = useState(false);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [sessionId] = useState(() => `session_${Date.now()}`);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
       role: "assistant",
-      text: "Namaste! 🙏 I'm your Himachal Explorer AI guide. Ask me about destinations, hotels, treks, itineraries, or anything about HP travel!",
-      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      text: "Namaste! 🙏 I'm your Himachal Explorer AI guide. Ask me about destinations, hotels, treks, itineraries, or anything about HP travel — or anything else you're curious about!",
+      time: "Now",
     },
   ]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  }, []);
 
   useEffect(() => {
-    if (isOpen) scrollToBottom();
-  }, [messages, isOpen]);
+    if (isOpen && !isMinimized) {
+      setTimeout(scrollToBottom, 100);
+    }
+  }, [messages, isOpen, isMinimized, scrollToBottom]);
+
+  useEffect(() => {
+    if (isOpen && !isMinimized) {
+      setTimeout(() => inputRef.current?.focus(), 300);
+    }
+  }, [isOpen, isMinimized]);
 
   const sendMessage = async (text: string) => {
-    if (!text.trim()) return;
+    if (!text.trim() || isTyping) return;
+    const now = formatMessageTime();
     const userMsg: Message = {
-      id: Date.now().toString(),
+      id: `u_${Date.now()}`,
       role: "user",
       text,
-      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      time: now,
     };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI thinking
-    await new Promise((res) => setTimeout(res, 800 + Math.random() * 700));
-    const response = getAIResponse(text);
-    const aiMsg: Message = {
-      id: (Date.now() + 1).toString(),
+    try {
+      const res = await axios.post(
+        "http://localhost:7500/api/ai-chat",
+        { message: text, sessionId },
+        { timeout: 15000 }
+      );
+      const responseText = res.data?.response || getFallbackResponse(text);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `a_${Date.now()}`,
+          role: "assistant",
+          text: responseText,
+          time: formatMessageTime(),
+        },
+      ]);
+    } catch {
+      // Use local fallback if backend is unavailable
+      await new Promise((r) => setTimeout(r, 600));
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `a_${Date.now()}`,
+          role: "assistant",
+          text: getFallbackResponse(text),
+          time: formatMessageTime(),
+        },
+      ]);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  const clearChat = () => {
+    setMessages([{
+      id: "welcome",
       role: "assistant",
-      text: response,
-      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    };
-    setMessages((prev) => [...prev, aiMsg]);
-    setIsTyping(false);
+      text: "Chat cleared! 🗑️ How can I help you with your Himachal Pradesh trip?",
+      time: formatMessageTime(),
+    }]);
   };
 
   return (
@@ -112,16 +149,13 @@ export default function AIAssistant() {
         className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 ${
           isOpen ? "scale-0 opacity-0 pointer-events-none" : "scale-100 opacity-100"
         }`}
-        style={{
-          background: "linear-gradient(135deg, #0ea5e9, #6366f1)",
-          boxShadow: "0 0 0 0 rgba(14,165,233,0.4)",
-        }}
+        style={{ background: "linear-gradient(135deg, #0ea5e9, #6366f1)" }}
         animate={{ boxShadow: ["0 0 0 0 rgba(14,165,233,0.4)", "0 0 0 15px rgba(14,165,233,0)"] }}
         transition={{ duration: 1.5, repeat: Infinity }}
         aria-label="Open AI Assistant"
       >
         <div className="relative">
-          <Bot className="w-6 h-6 text-white" />
+          <Sparkles className="w-6 h-6 text-white" />
           <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white" />
         </div>
       </motion.button>
@@ -135,12 +169,12 @@ export default function AIAssistant() {
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className={`fixed bottom-6 right-6 z-50 w-[360px] rounded-3xl shadow-2xl overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border)] ${
-              isMinimized ? "h-16" : "h-[550px]"
-            } transition-all duration-300`}
+              isMinimized ? "h-16" : "h-[580px]"
+            } transition-all duration-300 flex flex-col`}
             id="aiChatWindow"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3.5 bg-gradient-to-r from-sky-500 to-indigo-600">
+            <div className="flex items-center justify-between px-4 py-3.5 bg-gradient-to-r from-sky-500 to-indigo-600 flex-shrink-0">
               <div className="flex items-center gap-3">
                 <div className="relative w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center">
                   <Bot className="w-5 h-5 text-white" />
@@ -148,10 +182,19 @@ export default function AIAssistant() {
                 </div>
                 <div>
                   <p className="text-white font-semibold text-sm">HP Travel AI</p>
-                  <p className="text-sky-200 text-xs">Always available • Ask me anything</p>
+                  <p className="text-sky-200 text-xs">Powered by Gemini • Ask anything</p>
                 </div>
               </div>
               <div className="flex gap-1.5">
+                {!isMinimized && (
+                  <button
+                    onClick={clearChat}
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+                    title="Clear chat"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                  </button>
+                )}
                 <button
                   onClick={() => setIsMinimized(!isMinimized)}
                   className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
@@ -170,21 +213,26 @@ export default function AIAssistant() {
             {!isMinimized && (
               <>
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[390px]">
+                <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth">
                   {messages.map((msg) => (
                     <div
                       key={msg.id}
                       className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                     >
+                      {msg.role === "assistant" && (
+                        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center mr-2 mt-1 flex-shrink-0">
+                          <Bot className="w-3.5 h-3.5 text-white" />
+                        </div>
+                      )}
                       <div
-                        className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm whitespace-pre-line ${
+                        className={`max-w-[78%] rounded-2xl px-4 py-3 text-sm whitespace-pre-line leading-relaxed ${
                           msg.role === "user"
                             ? "bg-gradient-to-br from-sky-500 to-blue-600 text-white rounded-tr-sm"
                             : "bg-gray-100 dark:bg-gray-800 text-[var(--text-primary)] rounded-tl-sm"
                         }`}
                       >
                         {msg.text}
-                        <div className={`text-xs mt-1 ${msg.role === "user" ? "text-sky-200" : "text-gray-400"}`}>
+                        <div className={`text-xs mt-1.5 ${msg.role === "user" ? "text-sky-200" : "text-gray-400"}`}>
                           {msg.time}
                         </div>
                       </div>
@@ -193,8 +241,11 @@ export default function AIAssistant() {
 
                   {isTyping && (
                     <div className="flex justify-start">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center mr-2 mt-1 flex-shrink-0">
+                        <Bot className="w-3.5 h-3.5 text-white" />
+                      </div>
                       <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-tl-sm px-4 py-3">
-                        <div className="flex gap-1">
+                        <div className="flex gap-1.5 items-center h-4">
                           {[0, 0.15, 0.3].map((delay, i) => (
                             <motion.div
                               key={i}
@@ -210,14 +261,14 @@ export default function AIAssistant() {
                   <div ref={messagesEndRef} />
                 </div>
 
-                {/* Suggestions */}
+                {/* Quick suggestions */}
                 {messages.length <= 1 && (
                   <div className="px-4 pb-2 flex gap-2 flex-wrap">
                     {SUGGESTIONS.slice(0, 3).map((s) => (
                       <button
                         key={s}
                         onClick={() => sendMessage(s)}
-                        className="text-xs bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800 px-3 py-1.5 rounded-full hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors"
+                        className="text-xs bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800 px-3 py-1.5 rounded-full hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors text-left"
                       >
                         {s}
                       </button>
@@ -226,9 +277,10 @@ export default function AIAssistant() {
                 )}
 
                 {/* Input */}
-                <div className="p-3 border-t border-[var(--border)]">
+                <div className="p-3 border-t border-[var(--border)] flex-shrink-0">
                   <div className="flex gap-2">
                     <input
+                      ref={inputRef}
                       type="text"
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
@@ -240,12 +292,13 @@ export default function AIAssistant() {
                     <button
                       onClick={() => sendMessage(input)}
                       disabled={!input.trim() || isTyping}
-                      className="w-10 h-10 bg-gradient-to-br from-sky-500 to-blue-600 rounded-full flex items-center justify-center text-white hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      className="w-10 h-10 bg-gradient-to-br from-sky-500 to-blue-600 rounded-full flex items-center justify-center text-white hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex-shrink-0"
                       id="aiSendBtn"
                     >
                       <Send className="w-4 h-4" />
                     </button>
                   </div>
+                  <p className="text-xs text-center text-gray-400 mt-2">Powered by Google Gemini AI 🤖</p>
                 </div>
               </>
             )}

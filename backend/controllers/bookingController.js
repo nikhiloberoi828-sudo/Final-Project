@@ -2,7 +2,7 @@ const Booking = require("../models/Booking");
 
 const createBooking = async (req, res) => {
   try {
-    const { name, email, location, hotel_name, check_in, check_out, room_type, total_price } = req.body;
+    const { name, phone, email, location, hotel_name, check_in, check_out, room_type, total_price } = req.body;
 
     if (!name || !email || !location || !check_in || !check_out) {
       return res.status(400).json({
@@ -17,6 +17,7 @@ const createBooking = async (req, res) => {
 
     const booking = await Booking.create({
       name: name.trim(),
+      phone: phone ? phone.trim() : null,
       email: email.trim().toLowerCase(),
       location: location.trim(),
       hotel_name: hotel_name || "General Booking",

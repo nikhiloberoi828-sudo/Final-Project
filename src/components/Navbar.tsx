@@ -28,6 +28,7 @@ const navLinks = [
   },
   { href: "/accommodation", label: "Accommodation", icon: Hotel },
   { href: "/how-to-reach", label: "How to Reach", icon: Navigation },
+  { href: "/nai-raahein", label: "Nai Raahein", icon: Map },
   { href: "/gallery", label: "Gallery", icon: Image },
   { href: "/about", label: "About", icon: Info },
   { href: "/contact", label: "Contact", icon: Phone },

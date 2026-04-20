@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, User, Mail, MapPin, Calendar, Bed, DollarSign, Loader2 } from "lucide-react";
+import { X, User, Mail, MapPin, Calendar, Bed, DollarSign, Loader2, Phone } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 
@@ -24,6 +24,7 @@ const roomTypes = [
 export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, district }: BookingModalProps) {
   const [form, setForm] = useState({
     name: "",
+    phone: "",
     email: "",
     location: district || "",
     check_in: "",
@@ -46,6 +47,7 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!form.name.trim()) errs.name = "Name is required";
+    if (form.phone && !/^[0-9+\-\s]{7,15}$/.test(form.phone)) errs.phone = "Valid phone number required";
     if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) errs.email = "Valid email required";
     if (!form.location.trim()) errs.location = "Location is required";
     if (!form.check_in) errs.check_in = "Check-in date required";
@@ -70,7 +72,7 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
       });
       toast.success(`🎉 Booking confirmed at ${hotelName}! Check your email for details.`);
       onClose();
-      setForm({ name: "", email: "", location: district, check_in: "", check_out: "", room_type: "Standard Room" });
+      setForm({ name: "", phone: "", email: "", location: district, check_in: "", check_out: "", room_type: "Standard Room" });
     } catch (error: any) {
       console.error(error);
       toast.error(`❌ Booking failed: ${error.response?.data?.message || error.message}`);
@@ -161,6 +163,24 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
                   }`}
                 />
                 {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="text-sm font-medium text-[var(--text-primary)] mb-1.5 flex items-center gap-2">
+                  <Phone className="w-3.5 h-3.5 text-sky-500" /> Phone Number <span className="text-gray-400 font-normal text-xs">(optional)</span>
+                </label>
+                <input
+                  id="bookingPhone"
+                  type="tel"
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  placeholder="+91 98765 43210"
+                  className={`w-full px-4 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${
+                    errors.phone ? "border-red-400" : "border-[var(--border)]"
+                  }`}
+                />
+                {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
               </div>
 
               {/* Email */}
