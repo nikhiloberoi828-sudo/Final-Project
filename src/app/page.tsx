@@ -707,76 +707,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ──────────────── AI ITINERARY PLANNER ───────────────── */}
-      <section className="py-24 bg-[var(--bg-primary)]" id="ai-planner">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-br from-sky-500 via-blue-600 to-indigo-600 rounded-3xl p-10 md:p-14 relative overflow-hidden shadow-2xl">
-            {/* Decorative circles */}
-            <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/5 rounded-full" />
-            <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-white/5 rounded-full" />
-
-            <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="text-sky-200 font-semibold text-sm uppercase tracking-widest">AI Powered</span>
-                </div>
-                <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-                  Plan Your Perfect Himachal Trip
-                </h2>
-                <p className="text-sky-100 leading-relaxed mb-6">
-                  Let our AI create a personalized day-by-day itinerary based on your days, budget, and interests. Hundreds of travelers already trust it!
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  {["🗓️ Day-wise Plan", "💰 Budget Estimate", "🏨 Hotel Picks", "🗺️ Route Map"].map((f) => (
-                    <span key={f} className="bg-white/15 text-white text-sm px-4 py-1.5 rounded-full">{f}</span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Mini form */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 space-y-4">
-                <h3 className="text-white font-semibold">Quick Planner</h3>
-                <div>
-                  <label className="text-sky-200 text-xs mb-1 block">Number of Days</label>
-                  <select className="w-full bg-white/20 text-white placeholder-sky-200 border border-white/20 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-white" id="plannerDays">
-                    {[3, 5, 7, 10, 14].map((d) => <option key={d} value={d} className="text-gray-900">{d} Days</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="text-sky-200 text-xs mb-1 block">Budget (per person)</label>
-                  <select className="w-full bg-white/20 text-white border border-white/20 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-white" id="plannerBudget">
-                    <option className="text-gray-900">Budget (Under ₹5K/day)</option>
-                    <option className="text-gray-900">Mid-range (₹5K–15K/day)</option>
-                    <option className="text-gray-900">Luxury (₹15K+/day)</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-sky-200 text-xs mb-1 block">Interests</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. trekking, culture, photography..."
-                    className="w-full bg-white/20 text-white placeholder-sky-300 border border-white/20 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-white"
-                    id="plannerInterests"
-                  />
-                </div>
-                <button
-                  onClick={() => {
-                    const btn = document.getElementById("aiAssistantBtn") as HTMLButtonElement;
-                    btn?.click();
-                  }}
-                  className="w-full bg-white text-sky-600 font-bold py-3 rounded-xl hover:bg-sky-50 transition-colors flex items-center justify-center gap-2"
-                  id="generateItinerary"
-                >
-                  <Zap className="w-4 h-4" /> Generate Itinerary with AI
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
+
+
+
