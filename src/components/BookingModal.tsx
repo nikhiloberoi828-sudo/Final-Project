@@ -65,7 +65,7 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:6000/api/bookings", {
+      await axios.post("http://localhost:8080/api/bookings", {
         ...form,
         hotel_name: hotelName,
         total_price: totalPrice,
@@ -261,8 +261,8 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
                       type="button"
                       onClick={() => setForm({ ...form, room_type: room.value })}
                       className={`px-3 py-2.5 rounded-xl border text-sm text-left transition-all ${form.room_type === room.value
-                          ? "border-sky-500 bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400"
-                          : "border-[var(--border)] text-[var(--text-secondary)] hover:border-sky-200"
+                        ? "border-sky-500 bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400"
+                        : "border-[var(--border)] text-[var(--text-secondary)] hover:border-sky-200"
                         }`}
                     >
                       <div className="font-medium">{room.label}</div>
