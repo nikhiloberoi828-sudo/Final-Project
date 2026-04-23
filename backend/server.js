@@ -15,7 +15,7 @@ const destinationRoutes = require("./routes/destinationRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
 const app = express();
-const PORT = process.env.PORT || 7500;
+const PORT = process.env.PORT;
 
 // ─── Middleware ───────────────────────────────────────────────
 app.use(cors({ origin: ["http://localhost:3000", "http://localhost:3001"], credentials: true }));
