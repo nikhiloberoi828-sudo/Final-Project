@@ -9,10 +9,10 @@ import {
 } from "lucide-react";
 
 const navLinks = [
-  {
-    href: "/",
-    label: "Home",
-  },
+  // {
+  //   href: "/",
+  //   label: "Home",
+  // },
   {
     href: "/destinations",
     label: "Destinations",
@@ -68,11 +68,10 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
             ? "glass shadow-lg py-3"
             : "bg-transparent py-5"
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
@@ -105,13 +104,12 @@ export default function Navbar() {
                 >
                   <Link
                     href={link.href}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                      isActive(link.href)
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${isActive(link.href)
                         ? "bg-sky-500/20 text-sky-300"
                         : isScrolled
-                        ? "text-gray-700 dark:text-gray-200 hover:text-sky-500 dark:hover:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-500/10"
-                        : "text-white/90 hover:text-white hover:bg-white/10"
-                    }`}
+                          ? "text-gray-700 dark:text-gray-200 hover:text-sky-500 dark:hover:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-500/10"
+                          : "text-white/90 hover:text-white hover:bg-white/10"
+                      }`}
                   >
                     {link.label}
                     {link.dropdown && (
@@ -150,11 +148,10 @@ export default function Navbar() {
               {/* Favorites */}
               <Link
                 href="/destinations?view=favorites"
-                className={`hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  isScrolled
+                className={`hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${isScrolled
                     ? "text-gray-600 dark:text-gray-300 hover:text-rose-500"
                     : "text-white/80 hover:text-white hover:bg-white/10"
-                }`}
+                  }`}
               >
                 <Heart className="w-4 h-4" />
                 <span className="hidden md:inline">Saved</span>
@@ -164,11 +161,10 @@ export default function Navbar() {
               <button
                 onClick={toggleDark}
                 id="themeToggle"
-                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
-                  isScrolled
+                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${isScrolled
                     ? "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-sky-50 dark:hover:bg-sky-900/30 hover:text-sky-500"
                     : "bg-white/10 text-white hover:bg-white/20"
-                }`}
+                  }`}
                 aria-label="Toggle dark mode"
               >
                 <motion.div
@@ -193,11 +189,10 @@ export default function Navbar() {
               {/* Hamburger */}
               <button
                 onClick={() => setIsMobileOpen(!isMobileOpen)}
-                className={`lg:hidden w-9 h-9 rounded-full flex items-center justify-center transition-all ${
-                  isScrolled
+                className={`lg:hidden w-9 h-9 rounded-full flex items-center justify-center transition-all ${isScrolled
                     ? "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300"
                     : "bg-white/10 text-white"
-                }`}
+                  }`}
                 id="mobileMenuBtn"
                 aria-label="Toggle mobile menu"
               >
@@ -255,11 +250,10 @@ export default function Navbar() {
                       <Link
                         href={link.href}
                         onClick={() => setIsMobileOpen(false)}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                          isActive(link.href)
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${isActive(link.href)
                             ? "bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400"
                             : "text-[var(--text-primary)] hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-sky-500"
-                        }`}
+                          }`}
                       >
                         {link.icon && <link.icon className="w-4 h-4" />}
                         {link.label}

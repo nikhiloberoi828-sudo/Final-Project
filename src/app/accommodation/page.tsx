@@ -122,7 +122,7 @@ function AccommodationContent() {
       {/* Hero */}
       <div className="relative h-64 md:h-72 overflow-hidden">
         <Image
-          src="/assets/dest_Naggar-Castle.jpg"
+          src="/assets/dest_Naggar Castle.jpg"
           alt="Accommodation in Himachal Pradesh"
           fill
           className="object-cover"
