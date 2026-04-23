@@ -65,7 +65,7 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:7500/api/bookings", {
+      await axios.post("http://localhost:6000/api/bookings", {
         ...form,
         hotel_name: hotelName,
         total_price: totalPrice,
@@ -158,9 +158,8 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="Enter your full name"
-                  className={`w-full px-4 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${
-                    errors.name ? "border-red-400" : "border-[var(--border)]"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${errors.name ? "border-red-400" : "border-[var(--border)]"
+                    }`}
                 />
                 {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
               </div>
@@ -176,9 +175,8 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   placeholder="+91 98765 43210"
-                  className={`w-full px-4 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${
-                    errors.phone ? "border-red-400" : "border-[var(--border)]"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${errors.phone ? "border-red-400" : "border-[var(--border)]"
+                    }`}
                 />
                 {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
               </div>
@@ -194,9 +192,8 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   placeholder="your@email.com"
-                  className={`w-full px-4 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${
-                    errors.email ? "border-red-400" : "border-[var(--border)]"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${errors.email ? "border-red-400" : "border-[var(--border)]"
+                    }`}
                 />
                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
               </div>
@@ -212,9 +209,8 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
                   value={form.location}
                   onChange={(e) => setForm({ ...form, location: e.target.value })}
                   placeholder="e.g. Delhi, Mumbai..."
-                  className={`w-full px-4 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${
-                    errors.location ? "border-red-400" : "border-[var(--border)]"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${errors.location ? "border-red-400" : "border-[var(--border)]"
+                    }`}
                 />
                 {errors.location && <p className="text-red-500 text-xs mt-1">{errors.location}</p>}
               </div>
@@ -231,9 +227,8 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
                     min={today}
                     value={form.check_in}
                     onChange={(e) => setForm({ ...form, check_in: e.target.value })}
-                    className={`w-full px-3 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${
-                      errors.check_in ? "border-red-400" : "border-[var(--border)]"
-                    }`}
+                    className={`w-full px-3 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${errors.check_in ? "border-red-400" : "border-[var(--border)]"
+                      }`}
                   />
                   {errors.check_in && <p className="text-red-500 text-xs mt-1">{errors.check_in}</p>}
                 </div>
@@ -247,9 +242,8 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
                     min={form.check_in || today}
                     value={form.check_out}
                     onChange={(e) => setForm({ ...form, check_out: e.target.value })}
-                    className={`w-full px-3 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${
-                      errors.check_out ? "border-red-400" : "border-[var(--border)]"
-                    }`}
+                    className={`w-full px-3 py-3 rounded-xl border text-sm bg-gray-50 dark:bg-gray-800 text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${errors.check_out ? "border-red-400" : "border-[var(--border)]"
+                      }`}
                   />
                   {errors.check_out && <p className="text-red-500 text-xs mt-1">{errors.check_out}</p>}
                 </div>
@@ -266,11 +260,10 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
                       key={room.value}
                       type="button"
                       onClick={() => setForm({ ...form, room_type: room.value })}
-                      className={`px-3 py-2.5 rounded-xl border text-sm text-left transition-all ${
-                        form.room_type === room.value
+                      className={`px-3 py-2.5 rounded-xl border text-sm text-left transition-all ${form.room_type === room.value
                           ? "border-sky-500 bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400"
                           : "border-[var(--border)] text-[var(--text-secondary)] hover:border-sky-200"
-                      }`}
+                        }`}
                     >
                       <div className="font-medium">{room.label}</div>
                       <div className="text-xs opacity-70">₹{Math.round(hotelPrice * room.multiplier).toLocaleString()}/night</div>

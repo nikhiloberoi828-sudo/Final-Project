@@ -100,7 +100,7 @@ export default function AIAssistant() {
 
     try {
       const res = await axios.post(
-        "http://localhost:7500/api/ai-chat",
+        "http://localhost:/api/ai-chat",
         { message: text, sessionId },
         { timeout: 15000 }
       );
@@ -146,9 +146,8 @@ export default function AIAssistant() {
       <motion.button
         id="aiAssistantBtn"
         onClick={() => { setIsOpen(true); setIsMinimized(false); }}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 ${
-          isOpen ? "scale-0 opacity-0 pointer-events-none" : "scale-100 opacity-100"
-        }`}
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 ${isOpen ? "scale-0 opacity-0 pointer-events-none" : "scale-100 opacity-100"
+          }`}
         style={{ background: "linear-gradient(135deg, #0ea5e9, #6366f1)" }}
         animate={{ boxShadow: ["0 0 0 0 rgba(14,165,233,0.4)", "0 0 0 15px rgba(14,165,233,0)"] }}
         transition={{ duration: 1.5, repeat: Infinity }}
@@ -168,9 +167,8 @@ export default function AIAssistant() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className={`fixed bottom-6 right-6 z-50 w-[360px] rounded-3xl shadow-2xl overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border)] ${
-              isMinimized ? "h-16" : "h-[580px]"
-            } transition-all duration-300 flex flex-col`}
+            className={`fixed bottom-6 right-6 z-50 w-[360px] rounded-3xl shadow-2xl overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border)] ${isMinimized ? "h-16" : "h-[580px]"
+              } transition-all duration-300 flex flex-col`}
             id="aiChatWindow"
           >
             {/* Header */}
@@ -225,11 +223,10 @@ export default function AIAssistant() {
                         </div>
                       )}
                       <div
-                        className={`max-w-[78%] rounded-2xl px-4 py-3 text-sm whitespace-pre-line leading-relaxed ${
-                          msg.role === "user"
+                        className={`max-w-[78%] rounded-2xl px-4 py-3 text-sm whitespace-pre-line leading-relaxed ${msg.role === "user"
                             ? "bg-gradient-to-br from-sky-500 to-blue-600 text-white rounded-tr-sm"
                             : "bg-gray-100 dark:bg-gray-800 text-[var(--text-primary)] rounded-tl-sm"
-                        }`}
+                          }`}
                       >
                         {msg.text}
                         <div className={`text-xs mt-1.5 ${msg.role === "user" ? "text-sky-200" : "text-gray-400"}`}>
