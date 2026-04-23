@@ -316,7 +316,7 @@ export default function HomePage() {
       </section>
 
       {/* ──────────────── STATS ──────────────────────────────── */}
-      <section className="bg-gradient-to-r from-sky-900 via-blue-900 to-indigo-900 py-16">
+      <section className="bg//\\-gradient-to-r from-sky-900 via-blue-900 to-indigo-900 py-16">
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {stats.map((s) => (

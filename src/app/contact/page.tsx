@@ -25,7 +25,7 @@ export default function ContactPage() {
     }
     setLoading(true);
     try {
-      await axios.post("http://localhost:8080/api/contact", {
+      await axios.post("http://final-project-vk1w.onrender.com/api/contact", {
         name: form.name,
         email: form.email,
         message: form.subject ? `[${form.subject}] ${form.message}` : form.message,
