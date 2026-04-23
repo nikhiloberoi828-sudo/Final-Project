@@ -65,7 +65,7 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
     setLoading(true);
 
     try {
-      await axios.post("http://final-project-vk1w.onrender.com/api/bookings", {
+      await axios.post("http://localhost:8080/api/bookings", {
         ...form,
         hotel_name: hotelName,
         total_price: totalPrice,
