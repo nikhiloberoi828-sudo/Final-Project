@@ -12,8 +12,8 @@
   --border: #e2e8f0;
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.3);
-  --shadow: 0 4px 24px rgba(0,0,0,0.08);
-  --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
   --brand: #0ea5e9;
   --brand-dark: #0369a1;
   --accent: #10b981;
@@ -29,8 +29,8 @@
   --border: #1e293b;
   --glass-bg: rgba(17, 24, 39, 0.7);
   --glass-border: rgba(255, 255, 255, 0.08);
-  --shadow: 0 4px 24px rgba(0,0,0,0.4);
-  --shadow-lg: 0 20px 60px rgba(0,0,0,0.5);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -56,7 +56,10 @@ body {
 /* ============================================================
    TYPOGRAPHY
    ============================================================ */
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-display);
   line-height: 1.2;
 }
@@ -64,10 +67,22 @@ h1, h2, h3, h4 {
 /* ============================================================
    SCROLLBAR
    ============================================================ */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--brand-dark); }
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brand);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-dark);
+}
 
 /* ============================================================
    GLASSMORPHISM UTILITIES
@@ -90,61 +105,101 @@ h1, h2, h3, h4 {
    HERO VIDEO
    ============================================================ */
 .hero-overlay {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.5) 50%,
-    rgba(0, 0, 0, 0.7) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.7) 100%);
 }
 
 /* ============================================================
    ANIMATIONS
    ============================================================ */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-12px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 @keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position:  200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes spin-slow {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes pulse-ring {
-  0%   { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1.5); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
-.animate-fade-in-up { animation: fadeInUp 0.7s ease-out forwards; }
-.animate-fade-in    { animation: fadeIn  0.5s ease-in  forwards; }
-.animate-float      { animation: float   3s ease-in-out infinite; }
-.animate-spin-slow  { animation: spin-slow 20s linear infinite; }
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
 
 /* ============================================================
    SKELETON LOADER
    ============================================================ */
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--border) 25%,
-    rgba(255,255,255,0.3) 50%,
-    var(--border) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--border) 25%,
+      rgba(255, 255, 255, 0.3) 50%,
+      var(--border) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 8px;
@@ -156,6 +211,7 @@ h1, h2, h3, h4 {
 .card-hover {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .card-hover:hover {
   transform: translateY(-6px) scale(1.01);
   box-shadow: var(--shadow-lg);
@@ -164,6 +220,7 @@ h1, h2, h3, h4 {
 .img-zoom img {
   transition: transform 0.5s ease;
 }
+
 .img-zoom:hover img {
   transform: scale(1.08);
 }
@@ -212,9 +269,24 @@ h1, h2, h3, h4 {
   columns: 1;
   column-gap: 1rem;
 }
-@media (min-width: 640px)  { .masonry { columns: 2; } }
-@media (min-width: 768px)  { .masonry { columns: 3; } }
-@media (min-width: 1024px) { .masonry { columns: 4; } }
+
+@media (min-width: 640px) {
+  .masonry {
+    columns: 2;
+  }
+}
+
+@media (min-width: 768px) {
+  .masonry {
+    columns: 3;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonry {
+    columns: 4;
+  }
+}
 
 .masonry-item {
   break-inside: avoid;
@@ -262,7 +334,7 @@ h1, h2, h3, h4 {
 /* ============================================================
    TOAST OVERRIDE
    ============================================================ */
-.Toaster > div {
+.Toaster>div {
   font-family: var(--font-sans) !important;
 }
 
@@ -275,6 +347,7 @@ h1, h2, h3, h4 {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
