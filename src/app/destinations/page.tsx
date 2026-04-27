@@ -279,6 +279,15 @@ function DestinationsContent() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>(searchParams.get("id"));
 
+  const [shuffledDestinations, setShuffledDestinations] = useState<Destination[]>(destinations);
+  const [visibleCount, setVisibleCount] = useState(16);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    setShuffledDestinations([...destinations].sort(() => Math.random() - 0.5));
+  }, []);
+
   useEffect(() => {
     setExpandedId(searchParams.get("id"));
   }, [searchParams]);
@@ -303,7 +312,7 @@ function DestinationsContent() {
     toast.success(favorites.includes(id) ? "Removed from favorites" : "❤️ Added to favorites!");
   };
 
-  const filtered = destinations.filter((d) => {
+  const filtered = shuffledDestinations.filter((d) => {
     if (viewFavorites && !favorites.includes(d.id)) return false;
     if (query && !d.name.toLowerCase().includes(query.toLowerCase()) && !d.district.toLowerCase().includes(query.toLowerCase())) return false;
     if (selectedCat !== "all" && d.category !== selectedCat) return false;
@@ -311,12 +320,16 @@ function DestinationsContent() {
     return true;
   });
 
-  // Group by district
-  const grouped = filtered.reduce((acc, dest) => {
-    if (!acc[dest.district]) acc[dest.district] = [];
-    acc[dest.district].push(dest);
-    return acc;
-  }, {} as Record<string, Destination[]>);
+  // Reset visible count when filters change
+  useEffect(() => {
+    setVisibleCount(16);
+  }, [query, selectedCat, selectedDistrict, viewFavorites]);
+
+  const isFilterActive = query !== "" || selectedCat !== "all" || selectedDistrict !== "all" || viewFavorites;
+  const visibleDestinations = isFilterActive 
+    ? filtered 
+    : (isClient ? filtered.slice(0, visibleCount) : filtered.slice(0, 16));
+  const hasMore = !isFilterActive && visibleDestinations.length < filtered.length;
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
@@ -448,31 +461,30 @@ function DestinationsContent() {
           )}
         </div>
 
-        {/* Grouped by district */}
-        {Object.entries(grouped).map(([district, dests]) => (
-          <div key={district} id={`district-${district.toLowerCase().replace(/\s+/g, "-")}`} className="mb-14">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 bg-gradient-to-br from-sky-500 to-blue-600 rounded-full flex items-center justify-center">
-                <MapPin className="w-4 h-4 text-white" />
-              </div>
-              <h2 className="font-display text-2xl font-bold text-[var(--text-primary)]">{district} District</h2>
-              <span className="text-xs bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 px-3 py-1 rounded-full">
-                {dests.length} places
-              </span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {dests.map((dest) => (
-                <DestinationCard
-                  key={dest.id}
-                  dest={dest}
-                  isFav={favorites.includes(dest.id)}
-                  onToggleFav={toggleFavorite}
-                  onExplore={(id) => setExpandedId(id)}
-                />
-              ))}
-            </div>
+        {/* Destinations Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-14">
+          {visibleDestinations.map((dest) => (
+            <DestinationCard
+              key={dest.id}
+              dest={dest}
+              isFav={favorites.includes(dest.id)}
+              onToggleFav={toggleFavorite}
+              onExplore={(id) => setExpandedId(id)}
+            />
+          ))}
+        </div>
+
+        {/* Show More Button */}
+        {hasMore && (
+          <div className="flex justify-center mb-14">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 16)}
+              className="px-8 py-3 rounded-xl font-semibold bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors"
+            >
+              Show More
+            </button>
           </div>
-        ))}
+        )}
 
         {filtered.length === 0 && (
           <div className="text-center py-20">

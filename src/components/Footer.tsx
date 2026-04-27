@@ -50,7 +50,7 @@ export default function Footer() {
               Ready to Explore Himachal Pradesh?
             </h2>
             <p className="text-sky-100 mb-8 max-w-xl mx-auto">
-              Let our AI-powered planner create your perfect Himalayan itinerary — tailored to your budget, interests, and days.
+              Let our guide help you create your perfect Himalayan itinerary — tailored to your budget, interests, and days.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/destinations" className="btn-primary">

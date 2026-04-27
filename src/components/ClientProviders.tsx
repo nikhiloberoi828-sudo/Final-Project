@@ -4,8 +4,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 
-import AIAssistant from "@/components/AIAssistant";
-
 export default function ClientProviders({ children }: { children: React.ReactNode }) {
   return (
     <>
@@ -33,7 +31,7 @@ export default function ClientProviders({ children }: { children: React.ReactNod
       <Navbar />
       <main className="page-transition">{children}</main>
       <Footer />
-      <AIAssistant />
+
     </>
   );
 }

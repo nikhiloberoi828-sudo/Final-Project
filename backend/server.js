@@ -15,7 +15,6 @@ require("./models/Contact");
 
 // ─── Load Routes ──────────────────────────────────────────────
 const bookingRoutes = require("./routes/bookingRoutes");
-const aiChatRoutes = require("./routes/aiChatRoutes");
 const destinationRoutes = require("./routes/destinationRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
@@ -36,7 +35,6 @@ nextApp.prepare().then(() => {
   // ─── Routes ───────────────────────────────────────────────────
   app.use("/api/bookings", bookingRoutes);
   app.use("/api/destinations", destinationRoutes);
-  app.use("/api/ai-chat", aiChatRoutes);
   app.use("/api/contact", contactRoutes);
 
   // ─── Next.js Catch-All Handler ──────────────────────────────────────────────
@@ -64,8 +62,6 @@ nextApp.prepare().then(() => {
         console.log("📍 Health:    http://localhost:" + PORT + "/api/health");
         console.log("📋 Bookings:  http://localhost:" + PORT + "/api/bookings");
         console.log("📨 Contact:   http://localhost:" + PORT + "/api/contact");
-        console.log("🤖 AI Chat:   http://localhost:" + PORT + "/api/ai-chat");
-
         // Keep-alive cron job (every 10 minutes)
         const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "https://final-project-vk1w.onrender.com";
         setInterval(() => {

@@ -97,7 +97,16 @@ function AccommodationContent() {
 
   const allHotels = Object.values(hotelsByDistrict).flat();
 
-  const filtered = allHotels.filter((h) => {
+  const [shuffledHotels, setShuffledHotels] = useState<Hotel[]>(allHotels);
+  const [visibleCount, setVisibleCount] = useState(16);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    setShuffledHotels([...allHotels].sort(() => Math.random() - 0.5));
+  }, []);
+
+  const filtered = shuffledHotels.filter((h) => {
     if (selectedDistrict !== "all" && h.district !== selectedDistrict) return false;
     if (searchQuery && !h.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
@@ -107,15 +116,19 @@ function AccommodationContent() {
     if (sortBy === "price-asc") return a.price - b.price;
     if (sortBy === "price-desc") return b.price - a.price;
     if (sortBy === "rating") return b.rating - a.rating;
-    return 0;
+    return 0; // Default uses the shuffled order
   });
 
-  // Group by district
-  const grouped = sorted.reduce((acc, h) => {
-    if (!acc[h.district]) acc[h.district] = [];
-    acc[h.district].push(h);
-    return acc;
-  }, {} as Record<string, Hotel[]>);
+  // Reset visible count when filters or sort change
+  useEffect(() => {
+    setVisibleCount(16);
+  }, [searchQuery, selectedDistrict, sortBy]);
+
+  const isFilterActive = searchQuery !== "" || selectedDistrict !== "all" || sortBy !== "default";
+  const visibleHotels = isFilterActive 
+    ? sorted 
+    : (isClient ? sorted.slice(0, visibleCount) : sorted.slice(0, 16));
+  const hasMore = !isFilterActive && visibleHotels.length < sorted.length;
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
@@ -210,29 +223,28 @@ function AccommodationContent() {
           </p>
         </div>
 
-        {/* Grouped listings */}
-        {Object.entries(grouped).map(([district, hotels]) => (
-          <div key={district} className="mb-14">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 bg-gradient-to-br from-sky-500 to-blue-600 rounded-full flex items-center justify-center">
-                <MapPin className="w-4 h-4 text-white" />
-              </div>
-              <h2 className="font-display text-2xl font-bold text-[var(--text-primary)]">{district}</h2>
-              <span className="text-xs bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 px-3 py-1 rounded-full">
-                {hotels.length} properties
-              </span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {hotels.map((hotel) => (
-                <HotelCard
-                  key={hotel.id}
-                  hotel={hotel}
-                  onBook={() => setBookingHotel(hotel)}
-                />
-              ))}
-            </div>
+        {/* Accommodations Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-14">
+          {visibleHotels.map((hotel) => (
+            <HotelCard
+              key={hotel.id}
+              hotel={hotel}
+              onBook={() => setBookingHotel(hotel)}
+            />
+          ))}
+        </div>
+
+        {/* Show More Button */}
+        {hasMore && (
+          <div className="flex justify-center mb-14">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 16)}
+              className="px-8 py-3 rounded-xl font-semibold bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors"
+            >
+              Show More
+            </button>
           </div>
-        ))}
+        )}
       </div>
 
       {/* Booking Modal */}

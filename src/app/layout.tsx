@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: "Himachal Explorer",
     title: "Himachal Explorer – Discover the Land of Gods",
     description:
-      "Your ultimate guide to Himachal Pradesh tourism – destinations, accommodation, experiences, and AI-powered trip planning.",
+      "Your ultimate guide to Himachal Pradesh tourism – destinations, accommodation, and experiences.",
     images: [
       {
         url: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200&q=80",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Himachal Explorer – Discover the Land of Gods",
-    description: "Explore Himachal Pradesh with AI-powered travel planning.",
+    description: "Explore Himachal Pradesh with our comprehensive travel guide.",
   },
 };
 
