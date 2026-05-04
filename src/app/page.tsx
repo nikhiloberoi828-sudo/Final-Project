@@ -13,21 +13,21 @@ import { destinations, featuredAccommodations, testimonials } from "@/lib/data";
 // ─── Hero Slides ──────────────────────────────────────────────
 const heroSlides = [
   {
-    image: "/assets/gal_sanglavally.jpg",
+    image: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353785/dest_Indrahar_Pass_tficnj.jpg",
     badge: "✦ Discover the Himalayas",
     title: ["Where Mountains", "Speak to Your Soul"],
     subtitle: "Experience the untouched beauty, ancient wisdom, and thrilling adventures of Himachal Pradesh",
     cta: { primary: { href: "/destinations", label: "Explore Destinations" }, secondary: { href: "/gallery", label: "View Gallery" } },
   },
   {
-    image: "/assets/gal_dharamsala.jpg",
+    image: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353785/dest_Indrahar_Pass_tficnj.jpg",
     badge: "✦ Little Lhasa",
     title: ["Tibetan Serenity", "in the Himalayas"],
     subtitle: "Monasteries, chai shops, and the Dalai Lama's home — Dharamshala awaits your soul",
     cta: { primary: { href: "/destinations?district=Kangra", label: "Explore Kangra" }, secondary: { href: "/accommodation", label: "Book Stay" } },
   },
   {
-    image: "/assets/gal_chandratallake.jpg",
+    image: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353785/dest_Indrahar_Pass_tficnj.jpg",
     badge: "✦ Crystal Lakes",
     title: ["Chandratal —", "Moon Lake at 4300m"],
     subtitle: "Crescent-shaped Ramsar wetland surrounded by barren Himalayan peaks. Pure, surreal magic.",
@@ -98,7 +98,7 @@ function StatItem({ stat }: { stat: typeof stats[0] }) {
       <div className="flex items-center justify-center gap-1 mb-1">
         <stat.icon className="w-5 h-5 text-sky-400" />
       </div>
-      <div className="text-4xl font-bold font-display text-white">
+      <div className="text-4xl font-bold font-display text-black dark:text-white">
         {count}<span className="text-sky-400">{stat.suffix}</span>
       </div>
       <div className="text-gray-400 text-sm mt-1">{stat.label}</div>
@@ -354,7 +354,7 @@ export default function HomePage() {
             >
               <div className="absolute inset-0 img-zoom">
                 <Image
-                  src="/assets/dest_shimla ridge.jpeg"
+                  src="https://res.cloudinary.com/dtypvw22g/image/upload/v1777353726/dest_shimla_ridge_w3wbpl.jpg"
                   alt="Shimla"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -386,10 +386,10 @@ export default function HomePage() {
             {/* 2x2 right grid */}
             <div className="lg:col-span-2 grid grid-cols-2 gap-5">
               {[
-                { name: "Manali", district: "Kullu", tag: "ADVENTURE", img: "/assets/dest_manali.jpg", id: "manali-town" },
-                { name: "Spiti Valley", district: "Lahaul & Spiti", tag: "OFF-BEAT", img: "/assets/dest_spiti.jpg", id: "spiti-kaza" },
-                { name: "Lahaul", district: "Lahaul & Spiti", tag: "BACKPACKING", img: "/assets/dest_lahual.jpg", id: "spiti-chandratal" },
-                { name: "Kinnaur", district: "Kinnaur", tag: "CULTURAL", img: "/assets/dest_kinnaur1.jpg", id: "kinnaur-kalpa" },
+                { name: "Manali", district: "Kullu", tag: "ADVENTURE", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353584/dest_manali_xzqzhf.jpg", id: "manali-town" },
+                { name: "Spiti Valley", district: "Lahaul & Spiti", tag: "OFF-BEAT", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353586/dest_spiti_ct9vdi.jpg", id: "spiti-kaza" },
+                { name: "Lahaul", district: "Lahaul & Spiti", tag: "BACKPACKING", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353592/dest_lahual_ix9rza.jpg", id: "spiti-chandratal" },
+                { name: "Kinnaur", district: "Kinnaur", tag: "CULTURAL", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353595/dest_kinnaur1_vbloat.jpg", id: "kinnaur-kalpa" },
               ].map((dest, i) => (
                 <motion.div
                   key={dest.id}
@@ -593,35 +593,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ──────────────── MAP SECTION ────────────────────────── */}
-      <section className="py-24 bg-[var(--bg-primary)]" id="map-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <span className="section-subtitle block mb-3">Location</span>
-            <h2 className="section-title mb-4">Plan Your Route</h2>
-            <p className="section-desc max-w-xl mx-auto">
-              Explore Himachal Pradesh on the map. Click on your destination and start planning.
-            </p>
-          </motion.div>
-          <div className="map-container h-[480px] shadow-2xl rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-800">
-            <iframe
-              title="Himachal Pradesh Map"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1461891.6684261!2d75.58619285!3d31.89240375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3904f2f35f53f24b%3A0x4c9b6682c7a46e94!2sHimachal%20Pradesh!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
-        </div>
-      </section>
 
       {/* ──────────────── TESTIMONIALS ───────────────────────── */}
       <section className="py-24 bg-gray-50 dark:bg-gray-900/50" id="testimonials">
