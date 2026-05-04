@@ -3,7 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ZoomIn } from "lucide-react";
-import { galleryImages } from "@/lib/data";
+import { galleryImages } from "../../lib/data";
 
 const galleryCategories = ["all", "mountains", "lakes", "temples", "villages"];
 
