@@ -13,7 +13,7 @@ function HotelCard({ hotel, onBook }: { hotel: Hotel; onBook: () => void }) {
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group bg-[var(--bg-secondary)] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-[var(--border)] card-hover flex flex-col"
+      className="group bg-[var(--bg-secondary)] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-[var(--border)] card-hover flex flex-col h-full"
     >
       {/* Image */}
       <div className="relative h-48 overflow-hidden">
