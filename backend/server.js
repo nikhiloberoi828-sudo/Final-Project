@@ -51,9 +51,11 @@ sequelize
       console.log("📋 Bookings:  http://localhost:" + PORT + "/api/bookings");
       console.log("📨 Contact:   http://localhost:" + PORT + "/api/contact");
       // Keep-alive cron job (every 10 minutes)
-      const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "https://final-project-vk1w.onrender.com";
+      const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "https://final-project-fnxw.onrender.com";
+      const pingUrl = process.env.NODE_ENV === "production" ? `${RENDER_URL}/api/health` : `http://localhost:${PORT}/api/health`;
+      
       setInterval(() => {
-        require("axios").get(`https://final-project-vk1w.onrender.com/api/health`)
+        require("axios").get(pingUrl)
           .then(() => console.log("💓 Keep-alive ping successful"))
           .catch((err) => console.error("💔 Keep-alive ping failed:", err.message));
       }, 10 * 60 * 1000);

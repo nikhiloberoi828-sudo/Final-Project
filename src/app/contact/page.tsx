@@ -25,7 +25,8 @@ export default function ContactPage() {
     }
     setLoading(true);
     try {
-      await axios.post("http://localhost:8080/api/contact", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://final-project-fnxw.onrender.com";
+      await axios.post(`${apiUrl}/api/contact`, {
         name: form.name,
         email: form.email,
         message: form.subject ? `[${form.subject}] ${form.message}` : form.message,
