@@ -55,9 +55,6 @@ function HotelCard({ hotel, onBook }: { hotel: Hotel; onBook: () => void }) {
               {a}
             </span>
           ))}
-          {hotel.amenities.length > 3 && (
-            <span className="text-xs text-sky-500">+{hotel.amenities.length - 3} more</span>
-          )}
         </div>
 
         <div className="flex items-center justify-between pt-3 border-t border-[var(--border)] mt-auto">
