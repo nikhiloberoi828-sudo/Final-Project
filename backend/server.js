@@ -23,7 +23,7 @@ nextApp.prepare().then(() => {
   const PORT = process.env.PORT || 3000;
 
   // ─── Middleware ───────────────────────────────────────────────
-  app.use(cors({ origin: ["http://localhost:3000", "http://localhost:3001"], credentials: true }));
+  app.use(cors({ origin: true, credentials: true }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
@@ -63,9 +63,9 @@ nextApp.prepare().then(() => {
         console.log("📋 Bookings:  http://localhost:" + PORT + "/api/bookings");
         console.log("📨 Contact:   http://localhost:" + PORT + "/api/contact");
         // Keep-alive cron job (every 10 minutes)
-        const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "https://final-project-vk1w.onrender.com";
+        const RENDER_URL = "https://final-project-fnxw.onrender.com";
         setInterval(() => {
-          require("axios").get(`https://final-project-vk1w.onrender.com/api/health`)
+          require("axios").get(`${RENDER_URL}/api/health`)
             .then(() => console.log("💓 Keep-alive ping successful"))
             .catch((err) => console.error("💔 Keep-alive ping failed:", err.message));
         }, 10 * 60 * 1000);

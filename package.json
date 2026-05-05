@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node backend/server.js",
-    "build": "npm install && next build",
+    "dev": "concurrently \"next dev\" \"node backend/server.js\"",
+    "build": "next build",
     "start": "node backend/server.js",
+    "server": "node backend/server.js",
     "lint": "next lint"
   },
   "dependencies": {
