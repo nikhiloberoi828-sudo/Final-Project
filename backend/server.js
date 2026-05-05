@@ -17,7 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // ─── Middleware ───────────────────────────────────────────────
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({ origin: ["http://localhost:3000", "http://localhost:3001"], credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -46,12 +46,12 @@ sequelize
   })
   .then(function () {
     app.listen(PORT, function () {
-      console.log("🚀 Server running at https://final-project-fnxw.onrender.com");
+      console.log("🚀 Server running at http://localhost:" + PORT);
       console.log("📍 Health:    http://localhost:" + PORT + "/api/health");
       console.log("📋 Bookings:  http://localhost:" + PORT + "/api/bookings");
       console.log("📨 Contact:   http://localhost:" + PORT + "/api/contact");
       // Keep-alive cron job (every 10 minutes)
-      const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "https://final-project-fnxw.onrender.com";
+      const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "https://final-project-vk1w.onrender.com";
       const pingUrl = process.env.NODE_ENV === "production" ? `${RENDER_URL}/api/health` : `http://localhost:${PORT}/api/health`;
 
       setInterval(() => {
