@@ -4,8 +4,8 @@ import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Star, MapPin, Search, ChevronDown, X } from "lucide-react";
-import { hotelsByDistrict, districtHotelKeys, type Hotel } from "../../lib/data";
-import BookingModal from "../../components/BookingModal";
+import { hotelsByDistrict, districtHotelKeys, type Hotel } from "@/lib/data";
+import BookingModal from "@/components/BookingModal";
 
 function HotelCard({ hotel, onBook }: { hotel: Hotel; onBook: () => void }) {
   return (

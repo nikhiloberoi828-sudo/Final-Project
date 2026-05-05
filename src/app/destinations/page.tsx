@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Search, Heart, MapPin, Filter, Grid, List, X, Info, Calendar, Star, Activity, Map, ChevronRight, Hotel, Locate, ArrowRight, Share2 } from "lucide-react";
-import { destinations, districts, categories, type Destination } from "../../lib/data";
+import { destinations, districts, categories, type Destination } from "@/lib/data";
 import toast from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
 

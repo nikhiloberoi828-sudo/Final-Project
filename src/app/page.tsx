@@ -8,7 +8,7 @@ import {
   Mountain, Zap, Tent, Waves, TreePine, Camera, Users,
   ChevronLeft, ChevronRight
 } from "lucide-react";
-import { destinations, featuredAccommodations, testimonials } from "../lib/data";
+import { destinations, featuredAccommodations, testimonials } from "@/lib/data";
 
 // ─── Hero Slides ──────────────────────────────────────────────
 const heroSlides = [

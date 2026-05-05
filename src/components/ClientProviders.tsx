@@ -1,7 +1,7 @@
 "use client";
 import { Toaster } from "react-hot-toast";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 
 export default function ClientProviders({ children }: { children: React.ReactNode }) {
