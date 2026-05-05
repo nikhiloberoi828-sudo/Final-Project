@@ -46,10 +46,10 @@ sequelize
   })
   .then(function () {
     app.listen(PORT, function () {
-      console.log("🚀 Server running at https://final-project-fnxw.onrender.com:" + PORT);
-      console.log("📍 Health:    https://final-project-fnxw.onrender.com:" + PORT + "/api/health");
-      console.log("📋 Bookings:  https://final-project-fnxw.onrender.com:" + PORT + "/api/bookings");
-      console.log("📨 Contact:   https://final-project-fnxw.onrender.com:" + PORT + "/api/contact");
+      console.log("🚀 Server running at https://final-project-fnxw.onrender.com");
+      console.log("📍 Health:    http://localhost:" + PORT + "/api/health");
+      console.log("📋 Bookings:  http://localhost:" + PORT + "/api/bookings");
+      console.log("📨 Contact:   http://localhost:" + PORT + "/api/contact");
       // Keep-alive cron job (every 10 minutes)
       const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "https://final-project-fnxw.onrender.com";
       const pingUrl = process.env.NODE_ENV === "production" ? `${RENDER_URL}/api/health` : `http://localhost:${PORT}/api/health`;
