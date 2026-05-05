@@ -62,6 +62,6 @@ sequelize
     });
   })
   .catch(function (error) {
-    console.error("❌ Database connection failed:", error.message);
+    console.error("❌ Database connection failed Try Again:", error.message);
     process.exit(1);
   });
