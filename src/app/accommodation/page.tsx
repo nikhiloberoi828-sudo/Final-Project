@@ -13,7 +13,7 @@ function HotelCard({ hotel, onBook }: { hotel: Hotel; onBook: () => void }) {
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group bg-[var(--bg-secondary)] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-[var(--border)] card-hover"
+      className="group bg-[var(--bg-secondary)] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-[var(--border)] card-hover flex flex-col"
     >
       {/* Image */}
       <div className="relative h-48 overflow-hidden">
@@ -36,7 +36,7 @@ function HotelCard({ hotel, onBook }: { hotel: Hotel; onBook: () => void }) {
       </div>
 
       {/* Content */}
-      <div className="p-5">
+      <div className="p-5 flex flex-col flex-1">
         <h3 className="font-semibold text-[var(--text-primary)] text-base leading-tight mb-1.5 line-clamp-1">
           {hotel.name}
         </h3>
@@ -60,7 +60,7 @@ function HotelCard({ hotel, onBook }: { hotel: Hotel; onBook: () => void }) {
           )}
         </div>
 
-        <div className="flex items-center justify-between pt-3 border-t border-[var(--border)]">
+        <div className="flex items-center justify-between pt-3 border-t border-[var(--border)] mt-auto">
           <div>
             <p className="text-xs text-[var(--text-secondary)]">starting from</p>
             <p className="text-lg font-bold text-sky-600 dark:text-sky-400">
