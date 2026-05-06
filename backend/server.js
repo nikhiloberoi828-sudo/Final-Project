@@ -57,9 +57,9 @@ sequelize
       console.log(`📨 Contact:   http://localhost:${PORT}/api/contact`);
 
       // Keep-alive cron job (every 10 minutes)
-      const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "https://final-project-fnxw.onrender.com";
-      const pingUrl = process.env.NODE_ENV === "production" 
-        ? `${RENDER_URL}/api/health` 
+      const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "http://localhost:8080";
+      const pingUrl = process.env.NODE_ENV === "production"
+        ? `${RENDER_URL}/api/health`
         : `http://localhost:${PORT}/api/health`;
 
       setInterval(() => {
