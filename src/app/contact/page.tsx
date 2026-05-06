@@ -8,8 +8,8 @@ import axios from "axios";
 
 const contactInfo = [
   { icon: MapPin, label: "Address", value: "Tourism Dept, HP Secretariat, Shimla – 171 002", href: null },
-  { icon: Phone, label: "Phone", value: "+91-177-265-8765", href: "tel:+911772658765" },
-  { icon: Mail, label: "Email", value: "tourism@himachalexplorer.in", href: "mailto:tourism@himachalexplorer.in" },
+  { icon: Phone, label: "Phone", value: "+91-98162-49245", href: "tel:+919816249245" },
+  { icon: Mail, label: "Email", value: "nikhiloberoi828@gmail.com", href: "mailto:nikhiloberoi828@gmail.com" },
   { icon: Clock, label: "Working Hours", value: "Mon–Sat: 9:00 AM – 6:00 PM", href: null },
 ];
 

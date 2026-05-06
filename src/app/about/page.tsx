@@ -35,10 +35,10 @@ function Counter({ target, suffix, duration = 2000 }: { target: number; suffix: 
 }
 
 const team = [
-  { name: "Arjun Singh", role: "Founder & CEO", initials: "AS", color: "from-sky-500 to-blue-600", bio: "15+ years in Himalayan tourism. Passionate mountaineer and travel writer." },
-  { name: "Priya Thakur", role: "Head of Experiences", initials: "PT", color: "from-emerald-500 to-teal-600", bio: "Cultural tourism expert and former Himachal Tourism officer." },
-  { name: "Rahul Verma", role: "Technology Lead", initials: "RV", color: "from-purple-500 to-violet-600", bio: "Building AI-powered travel systems for the modern explorer." },
-  { name: "Sunita Rana", role: "Community Manager", initials: "SR", color: "from-rose-500 to-pink-600", bio: "Ensuring responsible and sustainable tourism in every district." },
+  { name: "Nikhil Kumar", role: "Founder & CEO", initials: "NK", color: "from-sky-500 to-blue-600", bio: "15+ years in Himalayan tourism. Passionate mountaineer and travel writer." },
+  { name: "Deepika Sharma", role: "Head of Experiences", initials: "DS", color: "from-emerald-500 to-teal-600", bio: "Cultural tourism expert and former Himachal Tourism officer." },
+  { name: "Sujal Vardhan", role: "Technology Lead", initials: "SV", color: "from-purple-500 to-violet-600", bio: "Building AI-powered travel systems for the modern explorer." },
+  { name: "Anurag Verma", role: "Community Manager", initials: "AV", color: "from-rose-500 to-pink-600", bio: "Ensuring responsible and sustainable tourism in every district." },
 ];
 
 const values = [

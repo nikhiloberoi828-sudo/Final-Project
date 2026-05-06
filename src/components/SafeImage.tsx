@@ -7,7 +7,7 @@ interface SafeImageProps extends Omit<ImageProps, "onError"> {
   fallbackSrc?: string;
 }
 
-const SafeImage = ({ src, alt, fallbackSrc = "/assets/placeholder.jpg", className, ...props }: SafeImageProps) => {
+const SafeImage = ({ src, alt, fallbackSrc = "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353785/dest_Indrahar_Pass_tficnj.jpg", className, ...props }: SafeImageProps) => {
   const [imgSrc, setImgSrc] = useState<string | any>("");
   const [error, setError] = useState(false);
 
@@ -19,29 +19,17 @@ const SafeImage = ({ src, alt, fallbackSrc = "/assets/placeholder.jpg", classNam
       // Remote URLs: let them be, but we'll catch errors
       if (s.startsWith("http")) return s;
 
-      // Clean local paths
-      // 1. Remove /public prefix if it exists
+      // Clean local paths (though we are moving to Cloudinary)
       if (s.startsWith("/public/")) {
         s = s.replace("/public", "");
       } else if (s.startsWith("public/")) {
         s = s.replace("public", "");
       }
 
-      // 2. Ensure leading slash
-      if (!s.startsWith("/")) {
+      if (!s.startsWith("/") && !s.includes("://")) {
         s = "/" + s;
       }
-
-      // 3. If it doesn't already have assets prefix but looks like a local image name
-      if (!s.startsWith("/assets/") && !s.includes("://")) {
-        s = "/assets" + (s.startsWith("/") ? "" : "/") + s;
-      }
       
-      // Double check prefix consistency (ensure single /assets/)
-      s = s.replace(/\/assets\/assets\//g, "/assets/");
-
-      // 4. Encode spaces properly for Next.js Image loader
-      // We use encodeURI but being careful not to double-encode
       return encodeURI(decodeURI(s));
     };
 

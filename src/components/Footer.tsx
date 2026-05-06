@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Mountain, Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 
 const footerLinks = {
@@ -25,18 +26,23 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { href: "#", icon: Facebook, label: "Facebook" },
+  { href: "https://www.facebook.com/share/18jJPcq2aN/", icon: Facebook, label: "Facebook" },
   { href: "#", icon: Instagram, label: "Instagram" },
   { href: "#", icon: Twitter, label: "Twitter" },
   { href: "#", icon: Youtube, label: "YouTube" },
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+  const hideBannerPaths = ["/", "/destinations", "/accommodation", "/nai-raahein"];
+  const shouldHideBanner = hideBannerPaths.includes(pathname);
+
   return (
     <footer className="bg-gray-950 text-white pt-20 pb-8">
       {/* CTA Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-3xl overflow-hidden mb-16">
+        {!shouldHideBanner && (
+          <div className="relative rounded-3xl overflow-hidden mb-16">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: "url(https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200&q=80)" }}
@@ -62,6 +68,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
+        )}
 
         {/* Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -139,14 +146,14 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <a href="tel:+911772658765" className="text-gray-400 hover:text-sky-400 text-sm transition-colors">
-                  +91-177-265-8765
+                <a href="tel:+919816249245" className="text-gray-400 hover:text-sky-400 text-sm transition-colors">
+                  +91-98162-49245
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <a href="mailto:tourism@himachalexplorer.in" className="text-gray-400 hover:text-sky-400 text-sm transition-colors">
-                  tourism@himachalexplorer.in
+                <a href="mailto:nikhiloberoi@gmail.com" className="text-gray-400 hover:text-sky-400 text-sm transition-colors">
+                  nikhiloberoi@gmail.com 
                 </a>
               </li>
             </ul>
