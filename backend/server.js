@@ -59,7 +59,7 @@ sequelize
       // Keep-alive cron job (every 10 minutes)
       const RENDER_URL =
         process.env.RENDER_EXTERNAL_URL ||
-        "https://final-project-fnxw.onrender.com";
+        "https://final-project-d9fw.onrender.com";
 
       const pingUrl =
         process.env.NODE_ENV === "production"
