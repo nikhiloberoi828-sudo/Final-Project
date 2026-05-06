@@ -57,15 +57,22 @@ sequelize
       console.log(`📨 Contact:   http://localhost:${PORT}/api/contact`);
 
       // Keep-alive cron job (every 10 minutes)
-      const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "https://final-project-fnxw.onrender.com";
-      const pingUrl = process.env.NODE_ENV === "production" 
-        ? `${RENDER_URL}/api/health` 
-        : `http://localhost:${PORT}/api/health`;
+      const RENDER_URL =
+        process.env.RENDER_EXTERNAL_URL ||
+        "https://final-project-fnxw.onrender.com";
+
+      const pingUrl =
+        process.env.NODE_ENV === "production"
+          ? `${RENDER_URL}/api/health`
+          : `http://localhost:${PORT}/api/health`;
 
       setInterval(() => {
-        axios.get(pingUrl)
+        axios
+          .get(pingUrl)
           .then(() => console.log("💓 Keep-alive ping successful"))
-          .catch((err) => console.error("💔 Keep-alive ping failed:", err.message));
+          .catch((err) =>
+            console.error("💔 Keep-alive ping failed:", err.message)
+          );
       }, 10 * 60 * 1000);
     });
   })
