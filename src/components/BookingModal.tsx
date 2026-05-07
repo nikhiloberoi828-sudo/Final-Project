@@ -65,7 +65,7 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
     setLoading(true);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/bookings";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://final-project-em3w.onrender.com/api/bookings";
       await axios.post(`${apiUrl}`, {
         ...form,
         hotel_name: hotelName,

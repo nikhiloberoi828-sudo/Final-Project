@@ -73,7 +73,7 @@ nextApp.prepare().then(() => {
         console.log(`📋 API Contact: http://localhost:${PORT}/api/contact`);
 
         // Keep-alive cron job (every 10 minutes)
-        const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "http://localhost:8080";
+        const RENDER_URL = process.env.RENDER_EXTERNAL_URL || "https://final-project-em3w.onrender.com";
         const pingUrl = process.env.NODE_ENV === "production"
           ? `${RENDER_URL}/api/health`
           : `http://localhost:${PORT}/api/health`;
