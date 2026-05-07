@@ -32,4 +32,13 @@ const createContact = async (req, res) => {
   }
 };
 
-module.exports = { createContact };
+const getContacts = async (req, res) => {
+  try {
+    const contacts = await Contact.findAll({ order: [["created_at", "DESC"]] });
+    res.json({ success: true, count: contacts.length, data: contacts });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { createContact, getContacts };
