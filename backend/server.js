@@ -1,4 +1,5 @@
-require("dotenv").config({ path: "./backend/.env" });
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const express = require("express");
 const cors = require("cors");
@@ -23,6 +24,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ─── Health Check ─────────────────────────────────────────────
+app.get("/", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "Himachal Explorer Backend API is active",
+    endpoints: {
+      health: "/api/health",
+      bookings: "/api/bookings",
+      contact: "/api/contact (POST)",
+      destinations: "/api/destinations"
+    }
+  });
+});
+
 app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
@@ -35,6 +49,15 @@ app.get("/api/health", (req, res) => {
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/destinations", destinationRoutes);
 app.use("/api/contact", contactRoutes);
+
+// ─── 404 Handler ──────────────────────────────────────────────
+app.use((req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found on this server`,
+    method: req.method
+  });
+});
 
 // ─── Global Error Handler ─────────────────────────────────────
 app.use((err, req, res, next) => {

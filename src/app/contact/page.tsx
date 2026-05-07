@@ -25,8 +25,8 @@ export default function ContactPage() {
     }
     setLoading(true);
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-      await axios.post(`${apiUrl}/api/contact`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/contact";   //added this 
+      await axios.post(`${apiUrl}`, {
         name: form.name,
         email: form.email,
         message: form.subject ? `[${form.subject}] ${form.message}` : form.message,
