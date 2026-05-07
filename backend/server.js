@@ -86,9 +86,12 @@ sequelize
         : `http://localhost:${PORT}/api/health`;
 
       setInterval(() => {
-        axios.get(pingUrl)
+        axios
+          .get(pingUrl)
           .then(() => console.log("💓 Keep-alive ping successful"))
-          .catch((err) => console.error("💔 Keep-alive ping failed:", err.message));
+          .catch((err) =>
+            console.error("💔 Keep-alive ping failed:", err.message)
+          );
       }, 10 * 60 * 1000);
     });
   })
