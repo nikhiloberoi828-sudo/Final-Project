@@ -26,7 +26,15 @@ const navLinks = [
       { href: "/destinations?cat=pilgrimage", label: "Pilgrimage Sites" },
     ],
   },
-  { href: "/accommodation", label: "Accommodation", icon: Hotel },
+  {
+    href: "/accommodation",
+    label: "Accommodation",
+    icon: Hotel,
+    dropdown: [
+      { href: "/my-bookings", label: "My Bookings" },
+      { href: "/cancel-booking", label: "Cancel Booking" },
+    ],
+  },
   { href: "/how-to-reach", label: "How to Reach", icon: Navigation },
   { href: "/nai-raahein", label: "Nai Raahein", icon: Map },
   { href: "/gallery", label: "Gallery", icon: Image },
@@ -292,6 +300,13 @@ export default function Navbar() {
                     className="flex items-center justify-center gap-2 w-full py-3 border border-[var(--border)] rounded-full text-sm font-medium text-[var(--text-primary)] hover:border-sky-500 hover:text-sky-500 transition-all"
                   >
                     <Heart className="w-4 h-4" /> Saved Trips
+                  </Link>
+                  <Link
+                    href="/cancel-booking"
+                    onClick={() => setIsMobileOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full py-3 border border-red-200 dark:border-red-900 rounded-full text-sm font-medium text-red-500 hover:border-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
+                  >
+                    Cancel a Booking
                   </Link>
                 </div>
               </div>

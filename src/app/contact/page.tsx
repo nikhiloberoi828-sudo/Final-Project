@@ -25,8 +25,8 @@ export default function ContactPage() {
     }
     setLoading(true);
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://final-project-em3w.onrender.com/api/contact";   //added this 
-      await axios.post(`${apiUrl}`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://final-project-em3w.onrender.com/api";
+      await axios.post(`${apiUrl}/contact`, {
         name: form.name,
         email: form.email,
         message: form.subject ? `[${form.subject}] ${form.message}` : form.message,

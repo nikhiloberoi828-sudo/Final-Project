@@ -1,12 +1,15 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { Mountain, Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 
 const footerLinks = {
   explore: [
     { href: "/destinations", label: "Destinations" },
     { href: "/accommodation", label: "Accommodation" },
+    { href: "/my-bookings", label: "My Bookings" },
+    { href: "/cancel-booking", label: "Cancel Booking" },
     { href: "/gallery", label: "Gallery" },
     { href: "/how-to-reach", label: "How to Reach" },
     { href: "/nai-raahein", label: "Nai Raahein" },
@@ -26,15 +29,50 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { href: "https://www.facebook.com/share/18jJPcq2aN/", icon: Facebook, label: "Facebook" },
-  { href: "#", icon: Instagram, label: "Instagram" },
-  { href: "#", icon: Twitter, label: "Twitter" },
-  { href: "#", icon: Youtube, label: "YouTube" },
+  { href: "https://www.facebook.com/share/18kG7gCdiu/", icon: Facebook, label: "Facebook" },
+  { href: "https://www.instagram.com/solan_views?igsh=cnFuOGtqZTR3MmZ4", icon: Instagram, label: "Instagram" },
+  { href: "https://twitter.com/HimachalExplore", icon: Twitter, label: "Twitter/X" },
+  { href: "https://youtube.com/@snapdash-rivo?si=HT6tD5Vd86Fm3sd5", icon: Youtube, label: "YouTube" },
 ];
 
 export default function Footer() {
   const pathname = usePathname();
-  const hideBannerPaths = ["/", "/destinations", "/accommodation", "/nai-raahein"];
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [newsletterError, setNewsletterError] = useState("");
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!newsletterEmail.trim()) {
+      setNewsletterError("Email is required");
+      return;
+    }
+    if (!emailRegex.test(newsletterEmail)) {
+      setNewsletterError("Please enter a valid email address");
+      return;
+    }
+    setNewsletterError("");
+    setNewsletterStatus("loading");
+    try {
+      await new Promise((res) => setTimeout(res, 800));
+      setNewsletterStatus("success");
+      setNewsletterEmail("");
+    } catch {
+      setNewsletterStatus("error");
+    }
+  };
+  const hideBannerPaths = [
+    "/",
+    "/destinations",
+    "/accommodation",
+    "/nai-raahein",
+    "/cancel-booking",
+    "/my-bookings",
+    "/privacy-policy",
+    "/terms-of-use",
+    "/sitemap"
+  ];
   const shouldHideBanner = hideBannerPaths.includes(pathname);
 
   return (
@@ -43,31 +81,31 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {!shouldHideBanner && (
           <div className="relative rounded-3xl overflow-hidden mb-16">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url(https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200&q=80)" }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-sky-900/90 to-blue-900/70" />
-          <div className="relative z-10 px-8 py-14 text-center">
-            <p className="text-sky-300 text-sm font-semibold uppercase tracking-widest mb-3">
-              Start Your Journey
-            </p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-              Ready to Explore Himachal Pradesh?
-            </h2>
-            <p className="text-sky-100 mb-8 max-w-xl mx-auto">
-              Let our guide help you create your perfect Himalayan itinerary — tailored to your budget, interests, and days.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/destinations" className="btn-primary">
-                Explore Destinations
-              </Link>
-              <Link href="/accommodation" className="border-2 border-white text-white font-semibold px-6 py-3 rounded-full hover:bg-white hover:text-sky-900 transition-all duration-300">
-                Book Accommodation
-              </Link>
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: "url(https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200&q=80)" }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-sky-900/90 to-blue-900/70" />
+            <div className="relative z-10 px-8 py-14 text-center">
+              <p className="text-sky-300 text-sm font-semibold uppercase tracking-widest mb-3">
+                Start Your Journey
+              </p>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
+                Ready to Explore Himachal Pradesh?
+              </h2>
+              <p className="text-sky-100 mb-8 max-w-xl mx-auto">
+                Let our guide help you create your perfect Himalayan itinerary — tailored to your budget, interests, and days.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/destinations" className="btn-primary">
+                  Explore Destinations
+                </Link>
+                <Link href="/accommodation" className="border-2 border-white text-white font-semibold px-6 py-3 rounded-full hover:bg-white hover:text-sky-900 transition-all duration-300">
+                  Book Accommodation
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
         )}
 
         {/* Footer Grid */}
@@ -152,8 +190,8 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <a href="mailto:nikhiloberoi@gmail.com" className="text-gray-400 hover:text-sky-400 text-sm transition-colors">
-                  nikhiloberoi@gmail.com 
+                <a href="mailto:nikhiloberoi828@gmail.com" className="text-gray-400 hover:text-sky-400 text-sm transition-colors">
+                  nikhiloberoi828@gmail.com
                 </a>
               </li>
             </ul>
@@ -161,16 +199,36 @@ export default function Footer() {
             {/* Newsletter Mini */}
             <div className="mt-6">
               <p className="text-sm font-medium text-white mb-3">Newsletter</p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="flex-1 bg-gray-800 border border-gray-700 text-white placeholder-gray-500 text-sm px-4 py-2 rounded-full focus:outline-none focus:border-sky-500 transition-colors"
-                />
-                <button className="w-9 h-9 bg-sky-500 hover:bg-sky-600 rounded-full flex items-center justify-center transition-colors">
-                  <ArrowRight className="w-4 h-4 text-white" />
-                </button>
-              </div>
+              {newsletterStatus === "success" ? (
+                <p className="text-sm text-emerald-400 font-medium">✅ Subscribed! Thank you.</p>
+              ) : (
+                <form onSubmit={handleNewsletterSubmit} noValidate>
+                  <div className="flex gap-2">
+                    <input
+                      id="footerNewsletterEmail"
+                      type="email"
+                      value={newsletterEmail}
+                      onChange={(e) => { setNewsletterEmail(e.target.value); setNewsletterError(""); }}
+                      placeholder="Your email"
+                      aria-label="Newsletter email"
+                      className="flex-1 bg-gray-800 border border-gray-700 text-white placeholder-gray-500 text-sm px-4 py-2 rounded-full focus:outline-none focus:border-sky-500 transition-colors"
+                    />
+                    <button
+                      type="submit"
+                      disabled={newsletterStatus === "loading"}
+                      aria-label="Subscribe to newsletter"
+                      className="w-9 h-9 bg-sky-500 hover:bg-sky-600 disabled:opacity-60 rounded-full flex items-center justify-center transition-colors flex-shrink-0"
+                    >
+                      {newsletterStatus === "loading" ? (
+                        <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <ArrowRight className="w-4 h-4 text-white" />
+                      )}
+                    </button>
+                  </div>
+                  {newsletterError && <p className="text-red-400 text-xs mt-1.5">{newsletterError}</p>}
+                </form>
+              )}
             </div>
           </div>
         </div>
@@ -181,11 +239,9 @@ export default function Footer() {
             © 2026 Himachal Explorer. All Rights Reserved. Made with ❤️ for the Himalayas.
           </p>
           <div className="flex gap-6">
-            {["Privacy Policy", "Terms of Use", "Sitemap"].map((item) => (
-              <a key={item} href="#" className="text-gray-500 hover:text-sky-400 text-xs transition-colors">
-                {item}
-              </a>
-            ))}
+            <Link href="/privacy-policy" className="text-gray-500 hover:text-sky-400 text-xs transition-colors">Privacy Policy</Link>
+            <Link href="/terms-of-use" className="text-gray-500 hover:text-sky-400 text-xs transition-colors">Terms of Use</Link>
+            <Link href="/sitemap" className="text-gray-500 hover:text-sky-400 text-xs transition-colors">Sitemap</Link>
           </div>
         </div>
       </div>

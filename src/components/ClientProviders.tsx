@@ -2,6 +2,7 @@
 import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 
 
 export default function ClientProviders({ children }: { children: React.ReactNode }) {
@@ -31,7 +32,7 @@ export default function ClientProviders({ children }: { children: React.ReactNod
       <Navbar />
       <main className="page-transition">{children}</main>
       <Footer />
-
+      <BackToTop />
     </>
   );
 }

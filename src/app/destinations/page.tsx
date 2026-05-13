@@ -4,10 +4,11 @@ import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Search, Heart, MapPin, Filter, Grid, List, X, Info, Calendar, Star, Activity, Map, ChevronRight, Hotel, Locate, ArrowRight, Share2 } from "lucide-react";
+import { Search, Heart, MapPin, Filter, Grid, List, X, Info, Calendar, Star, Activity, Map, ChevronRight, Hotel, Locate, ArrowRight, Share2, Inbox } from "lucide-react";
 import { destinations, districts, categories, type Destination } from "@/lib/data";
 import toast from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
+import { DestinationSkeleton } from "@/components/Skeleton";
 
 function DestinationCard({ dest, isFav, onToggleFav, onExplore }: { dest: Destination; isFav: boolean; onToggleFav: (id: string) => void; onExplore: (id: string) => void }) {
   const [showInfo, setShowInfo] = useState(false);
@@ -462,17 +463,47 @@ function DestinationsContent() {
         </div>
 
         {/* Destinations Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-14">
-          {visibleDestinations.map((dest) => (
-            <DestinationCard
-              key={dest.id}
-              dest={dest}
-              isFav={favorites.includes(dest.id)}
-              onToggleFav={toggleFavorite}
-              onExplore={(id) => setExpandedId(id)}
-            />
-          ))}
-        </div>
+        {!isClient ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-14">
+            {[...Array(8)].map((_, i) => (
+              <DestinationSkeleton key={i} />
+            ))}
+          </div>
+        ) : visibleDestinations.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-14">
+            {visibleDestinations.map((dest) => (
+              <DestinationCard
+                key={dest.id}
+                dest={dest}
+                isFav={favorites.includes(dest.id)}
+                onToggleFav={toggleFavorite}
+                onExplore={(id) => setExpandedId(id)}
+              />
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-20 bg-[var(--bg-secondary)] rounded-3xl border border-[var(--border)] mb-14"
+          >
+            <div className="text-6xl mb-4">{viewFavorites ? "❤️" : <Inbox className="w-16 h-16 text-gray-300 mx-auto" />}</div>
+            <h3 className="font-display text-2xl font-bold text-[var(--text-primary)] mb-2">
+              {viewFavorites ? "No saved destinations yet" : "No destinations found"}
+            </h3>
+            <p className="text-[var(--text-secondary)] mb-6">
+              {viewFavorites
+                ? "Start exploring and save your favorite places!"
+                : "Try adjusting your search or filters"}
+            </p>
+            <button
+              onClick={() => { setQuery(""); setSelectedCat("all"); setSelectedDistrict("all"); setViewFavorites(false); }}
+              className="btn-primary"
+            >
+              Browse All Destinations
+            </button>
+          </motion.div>
+        )}
 
         {/* Show More Button */}
         {hasMore && (

@@ -57,6 +57,7 @@ const getBookings = async (req, res) => {
 };
 
 const getBookingById = async (req, res) => {
+  console.log("DEBUG: getBookingById hit with ID:", req.params.id);
   try {
     const booking = await Booking.findByPk(req.params.id);
     if (!booking) return res.status(404).json({ success: false, message: "Booking not found" });
@@ -66,8 +67,66 @@ const getBookingById = async (req, res) => {
   }
 };
 
+// GET /api/bookings?email=user@example.com — fetch active bookings by email
+const getBookingsByEmail = async (req, res) => {
+  try {
+    const { email } = req.query;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ success: false, message: "Valid email is required" });
+    }
+    const { Op } = require("sequelize");
+    const bookings = await Booking.findAll({
+      where: {
+        email: email.trim().toLowerCase(),
+        status: { [Op.ne]: "cancelled" },
+      },
+      order: [["id", "DESC"]],
+    });
+    res.json({ success: true, count: bookings.length, data: bookings });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// PATCH /api/bookings/cancel — cancel a booking by id + email
+const cancelBooking = async (req, res) => {
+  try {
+    const { bookingId, email } = req.body;
+    if (!bookingId || !email) {
+      return res.status(400).json({ success: false, message: "bookingId and email are required" });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ success: false, message: "Invalid email format" });
+    }
+
+    const booking = await Booking.findOne({
+      where: { id: Number(bookingId), email: email.trim().toLowerCase() },
+    });
+
+    if (!booking) {
+      return res.status(404).json({ success: false, message: "Booking not found for this email" });
+    }
+    if (booking.status === "cancelled") {
+      return res.status(400).json({ success: false, message: "This booking is already cancelled" });
+    }
+
+    await booking.update({ status: "cancelled" });
+
+    return res.json({
+      success: true,
+      message: "Booking cancelled successfully",
+      data: { id: booking.id, status: "cancelled" },
+    });
+  } catch (error) {
+    console.error("Cancel booking error:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 module.exports = {
   createBooking,
   getBookings,
   getBookingById,
+  getBookingsByEmail,
+  cancelBooking,
 };
