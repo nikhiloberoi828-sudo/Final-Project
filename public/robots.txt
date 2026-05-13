@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow admin or API routes
+Disallow: /api/
+Disallow: /_next/
+
+# Sitemap location
+Sitemap: https://final-project-em3w.onrender.com/sitemap.xml

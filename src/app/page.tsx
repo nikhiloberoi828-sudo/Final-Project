@@ -61,32 +61,39 @@ const highlights = [
 ];
 
 
-// Counter hook
+// Counter hook — robust version
 function useCounter(target: number, duration = 2000) {
   const [count, setCount] = useState(0);
-  const [started, setStarted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const fired = useRef(false);
 
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting && !started) setStarted(true); },
-      { threshold: 0.5 }
+      ([entry]) => {
+        if (entry.isIntersecting && !fired.current) {
+          fired.current = true;
+          let start = 0;
+          const steps = duration / 16;
+          const step = target / steps;
+          const timer = setInterval(() => {
+            start += step;
+            if (start >= target) {
+              setCount(target);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor(start));
+            }
+          }, 16);
+        }
+      },
+      { threshold: 0.1 }
     );
-    if (ref.current) observer.observe(ref.current);
+    observer.observe(el);
     return () => observer.disconnect();
-  }, [started]);
-
-  useEffect(() => {
-    if (!started) return;
-    let start = 0;
-    const step = target / (duration / 16);
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= target) { setCount(target); clearInterval(timer); }
-      else setCount(Math.floor(start));
-    }, 16);
-    return () => clearInterval(timer);
-  }, [started, target, duration]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, duration]);
 
   return { count, ref };
 }
@@ -386,10 +393,10 @@ export default function HomePage() {
             {/* 2x2 right grid */}
             <div className="lg:col-span-2 grid grid-cols-2 gap-5">
               {[
-                { name: "Manali", district: "Kullu", tag: "ADVENTURE", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353584/dest_manali_xzqzhf.jpg", id: "manali-town" },
-                { name: "Spiti Valley", district: "Lahaul & Spiti", tag: "OFF-BEAT", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353586/dest_spiti_ct9vdi.jpg", id: "spiti-kaza" },
-                { name: "Lahaul", district: "Lahaul & Spiti", tag: "BACKPACKING", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353592/dest_lahual_ix9rza.jpg", id: "spiti-chandratal" },
-                { name: "Kinnaur", district: "Kinnaur", tag: "CULTURAL", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353595/dest_kinnaur1_vbloat.jpg", id: "kinnaur-kalpa" },
+                { name: "Manali", district: "Kullu", tag: "ADVENTURE", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353584/dest_manali_xzqzhf.jpg", id: "manali-town", desc: "Snow-capped peaks, Rohtang Pass, and the Beas river valley — Manali is Himachal's adventure capital." },
+                { name: "Spiti Valley", district: "Lahaul & Spiti", tag: "OFF-BEAT", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353586/dest_spiti_ct9vdi.jpg", id: "spiti-kaza", desc: "The 'Middle Land' — a cold desert plateau with ancient monasteries and crystal-clear skies at 4,000m+." },
+                { name: "Lahaul", district: "Lahaul & Spiti", tag: "BACKPACKING", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353592/dest_lahual_ix9rza.jpg", id: "spiti-chandratal", desc: "Dramatic valleys, Chandratal Lake, and the Rohtang gateway to the trans-Himalayan wilderness." },
+                { name: "Kinnaur", district: "Kinnaur", tag: "CULTURAL", img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353595/dest_kinnaur1_vbloat.jpg", id: "kinnaur-kalpa", desc: "Apple orchards, Tibetan culture, and the iconic Kinner Kailash peak watching over Kalpa village." },
               ].map((dest, i) => (
                 <motion.div
                   key={dest.id}
@@ -418,9 +425,12 @@ export default function HomePage() {
                   <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
                     <span className="text-xs bg-sky-500/90 text-white px-2 py-0.5 rounded-full font-semibold">{dest.tag}</span>
                     <h3 className="font-display text-lg font-bold text-white mt-1">{dest.name}</h3>
+                    {"desc" in dest && (
+                      <p className="text-white/70 text-xs mt-1 line-clamp-2 leading-relaxed">{dest.desc}</p>
+                    )}
                     <Link
                       href={`/destinations?district=${dest.district}`}
-                      className="text-sky-300 text-xs font-medium flex items-center gap-1 mt-1 hover:text-white transition-colors"
+                      className="text-sky-300 text-xs font-medium flex items-center gap-1 mt-1.5 hover:text-white transition-colors"
                     >
                       Explore <ArrowRight className="w-3 h-3" />
                     </Link>
@@ -622,23 +632,32 @@ export default function HomePage() {
                 {testimonials.slice(testiIdx * testiCards, testiIdx * testiCards + testiCards).map((t) => (
                   <div
                     key={t.id}
-                    className="bg-[var(--bg-secondary)] rounded-2xl p-7 shadow-sm border border-[var(--border)] hover:shadow-lg transition-all duration-300"
+                    className="bg-[var(--bg-secondary)] rounded-2xl p-7 shadow-sm border border-[var(--border)] hover:shadow-lg transition-all duration-300 flex flex-col"
                   >
-                    <div className="text-4xl text-sky-300 font-serif leading-none mb-4">❝</div>
-                    <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-5 line-clamp-4 italic">
-                      {t.text}
-                    </p>
-                    <div className="flex items-center justify-between">
+                    {/* Header: User Info & Stars */}
+                    <div className="flex items-center justify-between mb-5">
                       <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-white text-sm font-bold flex-shrink-0`}>
+                        <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-white text-base font-bold flex-shrink-0 shadow-md`}>
                           {t.initials}
                         </div>
                         <div>
-                          <p className="font-semibold text-[var(--text-primary)] text-sm">{t.name}</p>
-                          <p className="text-xs text-[var(--text-secondary)]">{t.location}</p>
+                          <p className="font-bold text-[var(--text-primary)] text-sm leading-tight">{t.name}</p>
+                          <p className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider font-semibold mt-0.5">{t.location}</p>
                         </div>
                       </div>
-                      <div className="star-rating text-sm">{"★".repeat(t.rating)}</div>
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className={`w-3 h-3 ${i < t.rating ? "fill-amber-400 text-amber-400" : "text-gray-200"}`} />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Content: The Quote */}
+                    <div className="relative">
+                      <div className="text-2xl text-sky-300/30 font-serif absolute -top-4 -left-2 select-none">❝</div>
+                      <p className="text-[var(--text-secondary)] text-sm leading-relaxed italic relative z-10 pl-2">
+                        {t.text}
+                      </p>
                     </div>
                   </div>
                 ))}

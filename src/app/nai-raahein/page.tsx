@@ -50,7 +50,7 @@ const campaignDestinations = [
     name: "Narkanda",
     district: "Shimla",
     desc: "A snow-dusted apple town with skiing slopes, Hatu Temple, and wide sunset views.",
-    img: "https://images.unsplash.com/photo-1601024445121-e5b82f020549?w=600&q=80",
+    img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353738/dest_narkanda1_kslpgt.jpg",
   },
   {
     name: "Pangi Valley",

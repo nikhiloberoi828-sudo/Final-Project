@@ -6,27 +6,32 @@ import { useEffect, useRef, useState } from "react";
 
 function Counter({ target, suffix, duration = 2000 }: { target: number; suffix: string; duration?: number }) {
   const [count, setCount] = useState(0);
-  const [started, setStarted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const fired = useRef(false);
+
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting && !started) setStarted(true); },
-      { threshold: 0.5 }
+      ([entry]) => {
+        if (entry.isIntersecting && !fired.current) {
+          fired.current = true;
+          let s = 0;
+          const step = target / (duration / 16);
+          const timer = setInterval(() => {
+            s += step;
+            if (s >= target) { setCount(target); clearInterval(timer); }
+            else setCount(Math.floor(s));
+          }, 16);
+        }
+      },
+      { threshold: 0.1 }
     );
-    if (ref.current) observer.observe(ref.current);
+    observer.observe(el);
     return () => observer.disconnect();
-  }, [started]);
-  useEffect(() => {
-    if (!started) return;
-    let s = 0;
-    const step = target / (duration / 16);
-    const t = setInterval(() => {
-      s += step;
-      if (s >= target) { setCount(target); clearInterval(t); }
-      else setCount(Math.floor(s));
-    }, 16);
-    return () => clearInterval(t);
-  }, [started, target, duration]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, duration]);
+
   return (
     <div ref={ref} className="text-4xl md:text-5xl font-display font-bold text-[var(--text-primary)]">
       {count}<span className="text-sky-500">{suffix}</span>

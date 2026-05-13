@@ -3,9 +3,10 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Star, MapPin, Search, ChevronDown, X } from "lucide-react";
+import { Star, MapPin, Search, ChevronDown, X, Inbox } from "lucide-react";
 import { hotelsByDistrict, districtHotelKeys, type Hotel } from "@/lib/data";
 import BookingModal from "@/components/BookingModal";
+import { HotelSkeleton } from "@/components/Skeleton";
 
 function HotelCard({ hotel, onBook }: { hotel: Hotel; onBook: () => void }) {
   return (
@@ -221,15 +222,41 @@ function AccommodationContent() {
         </div>
 
         {/* Accommodations Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-14">
-          {visibleHotels.map((hotel) => (
-            <HotelCard
-              key={hotel.id}
-              hotel={hotel}
-              onBook={() => setBookingHotel(hotel)}
-            />
-          ))}
-        </div>
+        {!isClient ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-14">
+            {[...Array(8)].map((_, i) => (
+              <HotelSkeleton key={i} />
+            ))}
+          </div>
+        ) : visibleHotels.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-14">
+            {visibleHotels.map((hotel) => (
+              <HotelCard
+                key={hotel.id}
+                hotel={hotel}
+                onBook={() => setBookingHotel(hotel)}
+              />
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center py-20 bg-[var(--bg-secondary)] rounded-3xl border border-[var(--border)] mb-14"
+          >
+            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Inbox className="w-8 h-8 text-gray-400" />
+            </div>
+            <h3 className="text-xl font-bold text-[var(--text-primary)]">No properties found</h3>
+            <p className="text-[var(--text-secondary)] mt-2">Try adjusting your filters or search query.</p>
+            <button
+              onClick={() => { setSelectedDistrict("all"); setSearchQuery(""); }}
+              className="mt-6 text-sky-500 font-semibold hover:underline"
+            >
+              Clear all filters
+            </button>
+          </motion.div>
+        )}
 
         {/* Show More Button */}
         {hasMore && (
