@@ -4,10 +4,10 @@ const createBooking = async (req, res) => {
   try {
     const { name, phone, email, location, hotel_name, check_in, check_out, room_type, total_price } = req.body;
     console.log(req.body);
-    if (!name || !email || !location || !check_in || !check_out) {
+    if (!name || !phone || !email || !location || !check_in || !check_out) {
       return res.status(400).json({
         success: false,
-        message: "Required fields missing: name, email, location, check_in, check_out",
+        message: "Required fields missing: name, phone, email, location, check_in, check_out",
       });
     }
 
@@ -17,7 +17,7 @@ const createBooking = async (req, res) => {
 
     const booking = await Booking.create({
       name: name.trim(),
-      phone: phone ? phone.trim() : null,
+      phone: phone.trim(),
       email: email.trim().toLowerCase(),
       location: location.trim(),
       hotel_name: hotel_name || "General Booking",

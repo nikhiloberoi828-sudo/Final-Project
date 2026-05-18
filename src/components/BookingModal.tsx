@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, User, Mail, MapPin, Calendar, Bed, DollarSign, Loader2, Phone } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useAuth } from "@/context/AuthContext";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ const roomTypes = [
 ];
 
 export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, district }: BookingModalProps) {
+  const { user } = useAuth();
+  
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -47,7 +50,11 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!form.name.trim()) errs.name = "Name is required";
-    if (form.phone && !/^[0-9+\-\s]{7,15}$/.test(form.phone)) errs.phone = "Valid phone number required";
+    if (!form.phone.trim()) {
+      errs.phone = "Phone number is required";
+    } else if (!/^[0-9+\-\s]{7,15}$/.test(form.phone)) {
+      errs.phone = "Valid phone number required";
+    }
     if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) errs.email = "Valid email required";
     if (!form.location.trim()) errs.location = "Location is required";
     if (!form.check_in) errs.check_in = "Check-in date required";
@@ -168,7 +175,7 @@ export default function BookingModal({ isOpen, onClose, hotelName, hotelPrice, d
               {/* Phone */}
               <div>
                 <label className="text-sm font-medium text-[var(--text-primary)] mb-1.5 flex items-center gap-2">
-                  <Phone className="w-3.5 h-3.5 text-sky-500" /> Phone Number <span className="text-gray-400 font-normal text-xs">(optional)</span>
+                  <Phone className="w-3.5 h-3.5 text-sky-500" /> Phone Number
                 </label>
                 <input
                   id="bookingPhone"
