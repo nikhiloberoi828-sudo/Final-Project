@@ -8,8 +8,6 @@ const footerLinks = {
   explore: [
     { href: "/destinations", label: "Destinations" },
     { href: "/accommodation", label: "Accommodation" },
-    { href: "/my-bookings", label: "My Bookings" },
-    { href: "/cancel-booking", label: "Cancel Booking" },
     { href: "/gallery", label: "Gallery" },
     { href: "/how-to-reach", label: "How to Reach" },
     { href: "/nai-raahein", label: "Nai Raahein" },
@@ -67,8 +65,7 @@ export default function Footer() {
     "/destinations",
     "/accommodation",
     "/nai-raahein",
-    "/cancel-booking",
-    "/my-bookings",
+    "/dashboard",
     "/privacy-policy",
     "/terms-of-use",
     "/sitemap"

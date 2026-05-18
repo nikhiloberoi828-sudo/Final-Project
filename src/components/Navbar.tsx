@@ -5,8 +5,9 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Mountain, Menu, X, Sun, Moon, Heart, ChevronDown,
-  MapPin, Hotel, Navigation, Image, Info, Phone, Map
+  MapPin, Hotel, Navigation, Image, Info, Phone, Map, User, LogOut, LayoutDashboard
 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const navLinks = [
   // {
@@ -30,10 +31,6 @@ const navLinks = [
     href: "/accommodation",
     label: "Accommodation",
     icon: Hotel,
-    dropdown: [
-      { href: "/my-bookings", label: "My Bookings" },
-      { href: "/cancel-booking", label: "Cancel Booking" },
-    ],
   },
   { href: "/how-to-reach", label: "How to Reach", icon: Navigation },
   { href: "/nai-raahein", label: "Nai Raahein", icon: Map },
@@ -48,6 +45,7 @@ export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
+  const { user, openAuthModal, logout } = useAuth();
 
   useEffect(() => {
     const saved = localStorage.getItem("theme");
@@ -186,13 +184,35 @@ export default function Navbar() {
                 </motion.div>
               </button>
 
-              {/* Book Now CTA */}
-              <Link
-                href="/accommodation"
-                className="hidden sm:flex btn-primary text-sm !px-5 !py-2"
-              >
-                Book Now
-              </Link>
+              {/* Auth Button or Profile */}
+              {user ? (
+                <div className="hidden sm:flex items-center gap-2 relative group">
+                  <button className="flex items-center gap-2 text-white bg-sky-600/50 hover:bg-sky-600/80 px-4 py-2 rounded-full text-sm font-medium transition-colors">
+                    <User className="w-4 h-4" />
+                    {user.name.split(" ")[0]}
+                  </button>
+                  {/* Hover Dropdown */}
+                  <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                    <div className="p-2 space-y-1">
+                      <Link href="/dashboard" className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
+                        <LayoutDashboard className="w-4 h-4 text-sky-500" />
+                        Dashboard
+                      </Link>
+                      <button onClick={logout} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg">
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => openAuthModal("login")}
+                  className="hidden sm:flex btn-primary text-sm !px-5 !py-2"
+                >
+                  Login / Sign Up
+                </button>
+              )}
 
               {/* Hamburger */}
               <button
@@ -287,26 +307,42 @@ export default function Navbar() {
 
                 {/* Bottom actions */}
                 <div className="mt-8 space-y-3">
-                  <Link
-                    href="/accommodation"
-                    onClick={() => setIsMobileOpen(false)}
-                    className="btn-primary w-full text-center block"
-                  >
-                    Book Now
-                  </Link>
+                  {user ? (
+                    <>
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setIsMobileOpen(false)}
+                        className="flex items-center justify-center gap-2 w-full py-3 bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 rounded-full text-sm font-medium transition-all"
+                      >
+                        <LayoutDashboard className="w-4 h-4" /> Dashboard
+                      </Link>
+                      <button
+                        onClick={() => {
+                          logout();
+                          setIsMobileOpen(false);
+                        }}
+                        className="flex items-center justify-center gap-2 w-full py-3 border border-[var(--border)] rounded-full text-sm font-medium text-[var(--text-primary)] transition-all"
+                      >
+                        <LogOut className="w-4 h-4" /> Logout
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        openAuthModal("login");
+                        setIsMobileOpen(false);
+                      }}
+                      className="btn-primary w-full text-center block py-3"
+                    >
+                      Login / Sign Up
+                    </button>
+                  )}
                   <Link
                     href="/destinations?view=favorites"
                     onClick={() => setIsMobileOpen(false)}
                     className="flex items-center justify-center gap-2 w-full py-3 border border-[var(--border)] rounded-full text-sm font-medium text-[var(--text-primary)] hover:border-sky-500 hover:text-sky-500 transition-all"
                   >
                     <Heart className="w-4 h-4" /> Saved Trips
-                  </Link>
-                  <Link
-                    href="/cancel-booking"
-                    onClick={() => setIsMobileOpen(false)}
-                    className="flex items-center justify-center gap-2 w-full py-3 border border-red-200 dark:border-red-900 rounded-full text-sm font-medium text-red-500 hover:border-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
-                  >
-                    Cancel a Booking
                   </Link>
                 </div>
               </div>

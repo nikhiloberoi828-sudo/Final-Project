@@ -7,6 +7,7 @@ import { Star, MapPin, Search, ChevronDown, X, Inbox } from "lucide-react";
 import { hotelsByDistrict, districtHotelKeys, type Hotel } from "@/lib/data";
 import BookingModal from "@/components/BookingModal";
 import { HotelSkeleton } from "@/components/Skeleton";
+import { useAuth } from "@/context/AuthContext";
 
 function HotelCard({ hotel, onBook }: { hotel: Hotel; onBook: () => void }) {
   return (
@@ -85,6 +86,7 @@ function AccommodationContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("default");
   const [bookingHotel, setBookingHotel] = useState<Hotel | null>(null);
+  const { user, openAuthModal } = useAuth();
 
   useEffect(() => {
     const district = searchParams.get("district");
@@ -234,7 +236,13 @@ function AccommodationContent() {
               <HotelCard
                 key={hotel.id}
                 hotel={hotel}
-                onBook={() => setBookingHotel(hotel)}
+                onBook={() => {
+                  if (!user) {
+                    openAuthModal("login");
+                  } else {
+                    setBookingHotel(hotel);
+                  }
+                }}
               />
             ))}
           </div>

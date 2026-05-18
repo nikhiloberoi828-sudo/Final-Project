@@ -17,11 +17,13 @@ const handle = nextApp.getRequestHandler();
 // ─── Load Models ──────────────────────────────────────────────
 require("./models/Booking");
 require("./models/Contact");
+require("./models/User");
 
 // ─── Load Routes ──────────────────────────────────────────────
 const bookingRoutes = require("./routes/bookingRoutes");
 const destinationRoutes = require("./routes/destinationRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 // Initialize Next.js then Start Express
 nextApp.prepare().then(() => {
@@ -37,6 +39,7 @@ nextApp.prepare().then(() => {
   app.use("/api/bookings", bookingRoutes);
   app.use("/api/destinations", destinationRoutes);
   app.use("/api/contact", contactRoutes);
+  app.use("/api/auth", authRoutes);
 
   app.get("/api/health", (req, res) => {
     res.json({
