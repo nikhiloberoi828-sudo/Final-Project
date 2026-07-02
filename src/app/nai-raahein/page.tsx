@@ -20,7 +20,7 @@ const campaignDestinations = [
     name: "Chitkul",
     district: "Kinnaur",
     desc: "The last inhabited village on the Indo-Tibet border, wrapped in apple orchards and glacier views.",
-    img: "https://images.unsplash.com/photo-1593608347479-da41e6ae3fb6?w=600&q=80",
+    img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1779088742/dest_Baspa_River_qc8phr.jpg",
   },
   {
     name: "Langza Village",
@@ -86,7 +86,7 @@ const campaignDestinations = [
     name: "Andretta Village",
     district: "Kangra",
     desc: "An artists' village known for pottery, theatre, and the creative spirit of the Palampur hills.",
-    img: "https://images.unsplash.com/photo-1561059488-916d69792237?w=600&q=80",
+    img: "https://res.cloudinary.com/dtypvw22g/image/upload/v1777353777/dest_Andretta_Village_p27qni.jpg",
   },
 ];
 
@@ -189,7 +189,7 @@ export default function NaiRaaheinPage() {
     <div className="min-h-screen bg-[var(--bg-primary)] overflow-x-hidden">
       <section className="relative h-[82vh] min-h-[640px] overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80"
+          src="https://res.cloudinary.com/dtypvw22g/image/upload/v1777353777/dest_Andretta_Village_p27qni.jpg"
           alt="Nai Raahein Nai Manzilein"
           fill
           priority
